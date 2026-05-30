@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://b6701b6amuxx8"]
+
+[ext_resource type="Texture2D" uid="uid://bcignff0t1t4x" path="res://Mokui1270/images/orbs/HealUav.png" id="1_74t3u"]
+
+[node name="HealUav" type="Node2D"]
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_74t3u")

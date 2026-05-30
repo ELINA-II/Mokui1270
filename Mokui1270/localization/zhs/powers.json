@@ -1,0 +1,24 @@
+{
+    "MOKUI1270-DASH_POWER.description": "本回合每次受到的伤害有[gold]50%[/gold]概率变为0,[gold]50%[/gold]概率伤害减半",
+    "MOKUI1270-DASH_POWER.smartDescription":"本回合每次受到的伤害有[gold]50%[/gold]概率变为0,[gold]50%[/gold]概率伤害减半",
+    "MOKUI1270-DASH_POWER.title": "机动冲刺·改",
+    "MOKUI1270-ENERGY_GRADIENT_POWER.description": "你的超量治疗会转变为等量格挡，格挡不再在回合开始时清空",
+    "MOKUI1270-ENERGY_GRADIENT_POWER.smartDescription":"你的超量治疗会转变为等量格挡，格挡不再在回合开始时清空",
+    "MOKUI1270-ENERGY_GRADIENT_POWER.title": "能量偏导·改",
+    "MOKUI1270-BLOOD_THIRSTY_POWER.description": "每次打出攻击牌都将回复2生命值",
+    "MOKUI1270-BLOOD_THIRSTY_POWER.smartDescription":"每次打出攻击牌都将回复[blue]{Amount}[/blue]生命值",
+    "MOKUI1270-BLOOD_THIRSTY_POWER.title": "嗜血",
+    "MOKUI1270-PAIN_KILLER_POWER.description": "每当你失去生命时,抽一张牌并获得1临时力量",
+    "MOKUI1270-PAIN_KILLER_POWER.smartDescription":"每当你失去生命时,抽[blue]{Amount}[/blue]张牌并获得[blue]{Amount}[/blue]临时力量",
+    "MOKUI1270-PAIN_KILLER_POWER.title": "止痛药",
+    "MOKUI1270-HEROICS_READY_POWER.description": "本场战斗内受到致死伤害时,免死且血量锁死为1,激活火场怪力效果",
+    "MOKUI1270-HEROICS_READY_POWER.smartDescription":"本场战斗内受到致死伤害时,免死且血量锁死为1,激活火场怪力效果",
+    "MOKUI1270-HEROICS_READY_POWER.title": "火场怪力_就绪",
+    "MOKUI1270-HEROICS_ACTIVE_POWER.description": "每回合获得{Energy:energyIcons()} {Energy:energyIcons()} {Energy:energyIcons()}与3临时力量,免疫受到的伤害,持续3回合",
+    "MOKUI1270-HEROICS_ACTIVE_POWER.smartDescription":"每回合获得{Energy:energyIcons()} {Energy:energyIcons()} {Energy:energyIcons()}与3临时力量,免疫受到的伤害,剩余[blue]{Amount}[/blue]回合",
+    "MOKUI1270-HEROICS_ACTIVE_POWER.title": "火场怪力_激活",
+    "MOKUI1270-FLUID_RECOVERY_POWER.description": "每次使用攻击卡牌对单体敌人造成伤害时，如果伤害来源不是多次伤害，你回复攻击伤害一半的血量",
+    "MOKUI1270-FLUID_RECOVERY_POWER.smartDescription":"每次使用攻击卡牌对单体敌人造成伤害时，如果伤害来源不是多次伤害，你回复攻击伤害一半的血量",
+    "MOKUI1270-FLUID_RECOVERY_POWER.title": "体液回收"
+
+}

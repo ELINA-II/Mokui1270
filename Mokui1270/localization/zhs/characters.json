@@ -1,0 +1,17 @@
+{
+  "MOKUI1270-MOKUI1270_CHARACTER.aromaPrinciple": "[sine][blue]……等待……[/blue][/sine]",
+  "MOKUI1270-MOKUI1270_CHARACTER.banter.alive.endTurnPing": "麻烦快点?",
+  "MOKUI1270-MOKUI1270_CHARACTER.banter.dead.endTurnPing": "404: Mokui网络错误",
+  "MOKUI1270-MOKUI1270_CHARACTER.cardsModifierDescription": "MOKUI1270的卡牌现在会出现在奖励和商店中。",
+  "MOKUI1270-MOKUI1270_CHARACTER.cardsModifierTitle": "MOKUI1270卡牌",
+  "MOKUI1270-MOKUI1270_CHARACTER.description": "重新编译后再次来到高塔的Mokui\n时间操控模块被禁用的她来此测试下自己的新装备们",
+  "MOKUI1270-MOKUI1270_CHARACTER.eventDeathPrevention": "死了啦,都你害的啦...",
+  "MOKUI1270-MOKUI1270_CHARACTER.goldMonologue": "[sine]金币?有意思[/sine]",
+  "MOKUI1270-MOKUI1270_CHARACTER.possessiveAdjective": "她的",
+  "MOKUI1270-MOKUI1270_CHARACTER.pronounObject": "她",
+  "MOKUI1270-MOKUI1270_CHARACTER.pronounPossessive": "她的",
+  "MOKUI1270-MOKUI1270_CHARACTER.pronounSubject": "她",
+  "MOKUI1270-MOKUI1270_CHARACTER.title": "Mokui1270",
+  "MOKUI1270-MOKUI1270_CHARACTER.titleObject": "Mokui",
+  "MOKUI1270-MOKUI1270_CHARACTER.unlockText": "用[pink]{Prerequisite}[/pink]进行一局游戏来解锁这个角色。"
+}

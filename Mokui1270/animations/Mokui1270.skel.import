@@ -1,0 +1,14 @@
+[remap]
+
+importer="spine.skel"
+type="SpineSkeletonFileResource"
+uid="uid://61l25r2m6ntt"
+path="res://.godot/imported/Mokui1270.skel-8b9c10cc17921bb18d961a2109803040.spskel"
+
+[deps]
+
+source_file="res://Mokui1270/animations/Mokui1270.skel"
+dest_files=["res://.godot/imported/Mokui1270.skel-8b9c10cc17921bb18d961a2109803040.spskel"]
+
+[params]
+

@@ -1,0 +1,8 @@
+[gd_resource type="SpineSkeletonDataResource" load_steps=3 format=3 uid="uid://c615hkj8naerp"]
+
+[ext_resource type="SpineAtlasResource" uid="uid://btt21aug1qwtk" path="res://Mokui1270/animations/Mokui1270.atlas" id="1_h5cnc"]
+[ext_resource type="SpineSkeletonFileResource" uid="uid://61l25r2m6ntt" path="res://Mokui1270/animations/Mokui1270.skel" id="2_eqdsq"]
+
+[resource]
+atlas_res = ExtResource("1_h5cnc")
+skeleton_file_res = ExtResource("2_eqdsq")

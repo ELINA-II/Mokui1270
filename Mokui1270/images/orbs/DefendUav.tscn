@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://t5e812lhv2cj"]
+
+[ext_resource type="Texture2D" uid="uid://xi2jch4yqw5n" path="res://Mokui1270/images/orbs/DefendUav.png" id="1_x4bw1"]
+
+[node name="DefendUav" type="Node2D"]
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_x4bw1")

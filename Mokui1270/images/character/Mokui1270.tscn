@@ -1,0 +1,29 @@
+[gd_scene load_steps=2 format=3 uid="uid://d3qt21o52skab"]
+
+[ext_resource type="SpineSkeletonDataResource" uid="uid://c615hkj8naerp" path="res://Mokui1270.tres" id="1_4auff"]
+
+[node name="TestCharacter" type="Node2D"]
+
+[node name="Visuals" type="SpineSprite" parent="."]
+skeleton_data_res = ExtResource("1_4auff")
+preview_skin = "Default"
+preview_animation = "-- Empty --"
+preview_frame = false
+preview_time = 0.0
+unique_name_in_owner = true
+
+[node name="Bounds" type="Control" parent="."]
+unique_name_in_owner = true
+layout_mode = 3
+anchors_preset = 0
+offset_left = -92.0
+offset_top = -379.0
+offset_right = 91.0
+
+[node name="IntentPos" type="Marker2D" parent="."]
+unique_name_in_owner = true
+position = Vector2(0, -393)
+
+[node name="CenterPos" type="Marker2D" parent="."]
+unique_name_in_owner = true
+position = Vector2(3, -190)

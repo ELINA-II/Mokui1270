@@ -1,0 +1,16 @@
+[remap]
+
+importer="spine.atlas"
+type="SpineAtlasResource"
+uid="uid://btt21aug1qwtk"
+path="res://.godot/imported/Mokui1270.atlas-739a0754e73bdc0d8e816bd92e9d87b3.spatlas"
+
+[deps]
+
+source_file="res://Mokui1270/animations/Mokui1270.atlas"
+dest_files=["res://.godot/imported/Mokui1270.atlas-739a0754e73bdc0d8e816bd92e9d87b3.spatlas"]
+
+[params]
+
+normal_map_prefix="n"
+specular_map_prefix="s"

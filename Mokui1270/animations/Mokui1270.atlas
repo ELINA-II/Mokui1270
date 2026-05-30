@@ -1,0 +1,41 @@
+Mokui1270.png
+size: 501, 132
+format: RGBA8888
+filter: Linear, Linear
+repeat: none
+Body
+  rotate: true
+  xy: 2, 2
+  size: 128, 219
+  orig: 128, 219
+  offset: 0, 0
+  index: -1
+LeftHand
+  rotate: false
+  xy: 463, 11
+  size: 36, 119
+  orig: 36, 119
+  offset: 0, 0
+  index: -1
+LeftLeg
+  rotate: true
+  xy: 223, 74
+  size: 56, 184
+  orig: 56, 184
+  offset: 0, 0
+  index: -1
+RightHand
+  rotate: false
+  xy: 409, 11
+  size: 52, 119
+  orig: 53, 140
+  offset: 1, 21
+  index: -1
+RightLeg
+  rotate: true
+  xy: 223, 16
+  size: 56, 184
+  orig: 56, 184
+  offset: 0, 0
+  index: -1
+
