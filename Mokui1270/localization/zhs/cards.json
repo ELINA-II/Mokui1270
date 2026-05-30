@@ -83,6 +83,9 @@
     "MOKUI1270-CURTAIN_CRACK.description":"去除敌人身上的人工制品且其本回合失去{StrengthLoss:diff()}层力量",
     "MOKUI1270-NANOFIBER_SYNC.title":"纳米纤维同步",
     "MOKUI1270-NANOFIBER_SYNC.description":"所有玩家立即回复{Heal:diff()}点血量",
+    "MOKUI1270-RAPID_UA_V_BUILDER.title":"快速无人机构筑",
+    "MOKUI1270-RAPID_UA_V_BUILDER.description":"从[gold]攻击[gold/]、[gold]防御[gold/]、[gold]治疗[gold/]无人机中选择一架构筑",
+    
     
     
     

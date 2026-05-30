@@ -16,12 +16,6 @@ public class PainKillerPower : CustomPowerModel
     public override string? CustomPackedIconPath => "res://Mokui1270/images/powers/PainKillerPower.png";
     public override string? CustomBigIconPath => "res://Mokui1270/images/powers/PainKillerPower.png";
 
-    
-   
-    /// <summary>
-    /// 参考 NecroMasteryPower.AfterCurrentHpChanged
-    /// delta < 0 表示失去生命
-    /// </summary>
     public override async Task AfterCurrentHpChanged(Creature creature, decimal delta)
     {
         // 只关心自己
