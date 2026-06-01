@@ -6,6 +6,7 @@ using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Models;
 using Mokui1270.Scripts.Orbs;
 using Mokui1270.Scripts.Patchs;
+using Mokui1270.Scripts.Powers;
 
 namespace Mokui1270.Scripts.Cards;
 
@@ -56,26 +57,14 @@ public class MassiveUAVBuilder : AbstractMokui1270Card
         // 5. 执行选中的效果
         if (selected is AttackUavChoice)
         {
-            await AttackBuild(choiceContext);
-        }
+            await PowerCmd.Apply<MassiveUAVBuilderAttackPower>(Owner.Creature,1,Owner.Creature, this);
+            }
         else if (selected is DefendUavChoice)
         {
-            await DefendBuild(choiceContext);
+            await PowerCmd.Apply<MassiveUAVBuilderDefendPower>(Owner.Creature,1,Owner.Creature, this);
         }else if(selected is HealUavChoice){
-            await HealBuild(choiceContext);
+            await PowerCmd.Apply<MassiveUAVBuilderHealPower>(Owner.Creature,1,Owner.Creature, this);
         }
-    }
-    private async Task AttackBuild(PlayerChoiceContext choiceContext)
-    {
-        await OrbCmd.Channel<AttackUav>(choiceContext,Owner);
-    }
-    private async Task DefendBuild(PlayerChoiceContext choiceContext)
-    {
-        await OrbCmd.Channel<DefendUav>(choiceContext,Owner);
-    }
-    private async Task HealBuild(PlayerChoiceContext choiceContext)
-    {
-        await OrbCmd.Channel<HealUav>(choiceContext,Owner);
     }
 
     protected override void OnUpgrade()

@@ -1,7 +1,9 @@
 using BaseLib.Abstracts;
 using MegaCrit.Sts2.Core.Entities.Cards;
-using Mokui1270.BloodCostSystem;
+using MegaCrit.Sts2.Core.Entities.Players;
+using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using Mokui1270.NanomachineCostSystem;
+using Mokui1270.Scripts.RAM;
 
 namespace Mokui1270.Scripts.Cards;
 
@@ -31,6 +33,18 @@ public abstract class AbstractMokui1270Card : CustomCardModel
         }
     }
     private bool _isNanomachine = false;
+    public bool isHack 
+    { 
+        get => _isHack;
+        set
+        {
+            if(_isHack == value) return;
+            _isHack = value;
+        }
+    }
+    private bool _isHack = false;
+
+
     
     // 无参构造函数（游戏系统需要）
     protected AbstractMokui1270Card() : base(0, CardType.Skill, CardRarity.Common, TargetType.Self, true)
@@ -41,5 +55,22 @@ public abstract class AbstractMokui1270Card : CustomCardModel
     protected AbstractMokui1270Card(int energyCost, CardType type, CardRarity rarity, TargetType targetType, bool shouldShowInCardLibrary) 
         : base(energyCost, type, rarity, targetType, shouldShowInCardLibrary)
     {
+    }
+
+    public virtual async Task<bool> couldplay(bool isHack,int ramcost,PlayerChoiceContext context,Player player)
+    {
+        if (isHack == true)
+        {
+            if(await RAMClass.ConsumeRAM(context, ramcost,player)){
+            return true;
+            }
+            else
+            {
+            return false;
+            }
+        }else{
+        return true;
+        }
+
     }
 }

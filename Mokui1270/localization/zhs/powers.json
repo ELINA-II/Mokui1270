@@ -19,6 +19,25 @@
     "MOKUI1270-HEROICS_ACTIVE_POWER.title": "火场怪力_激活",
     "MOKUI1270-FLUID_RECOVERY_POWER.description": "每次使用攻击卡牌对单体敌人造成伤害时，如果伤害来源不是多次伤害，你回复攻击伤害一半的血量",
     "MOKUI1270-FLUID_RECOVERY_POWER.smartDescription":"每次使用攻击卡牌对单体敌人造成伤害时，如果伤害来源不是多次伤害，你回复攻击伤害一半的血量",
-    "MOKUI1270-FLUID_RECOVERY_POWER.title": "体液回收"
+    "MOKUI1270-FLUID_RECOVERY_POWER.title": "体液回收",
+    
+    "MOKUI1270-MASSIVE_UA_V_BUILDER_ATTACK_POWER.description": "下回合获得两架攻击无人机",
+    "MOKUI1270-MASSIVE_UA_V_BUILDER_ATTACK_POWER.smartDescription":"下[blue]{Amount}[/blue]回合获得两架攻击无人机",
+    "MOKUI1270-MASSIVE_UA_V_BUILDER_ATTACK_POWER.title": "无人机构筑—攻击无人机",
+    "MOKUI1270-MASSIVE_UA_V_BUILDER_DEFEND_POWER.description": "下回合获得两架护卫无人机",
+    "MOKUI1270-MASSIVE_UA_V_BUILDER_DEFEND_POWER.smartDescription":"下[blue]{Amount}[/blue]回合获得两架护卫无人机",
+    "MOKUI1270-MASSIVE_UA_V_BUILDER_DEFEND_POWER.title": "无人机构筑—护卫无人机",
+    "MOKUI1270-MASSIVE_UA_V_BUILDER_HEAL_POWER.description": "下回合获得两架治疗无人机",
+    "MOKUI1270-MASSIVE_UA_V_BUILDER_HEAL_POWER.smartDescription":"下[blue]{Amount}[/blue]回合获得两架治疗无人机",
+    "MOKUI1270-MASSIVE_UA_V_BUILDER_HEAL_POWER.title": "无人机构筑—治疗无人机",
+    "MOKUI1270-ENHANCED_SELF_DESTRUCT_POWER.description": "无人机自毁后对随机一名敌人造成4伤害",
+    "MOKUI1270-ENHANCED_SELF_DESTRUCT_POWER.smartDescription":"无人机自毁后对随机一名敌人造成[blue]{Amount}[/blue]伤害",
+    "MOKUI1270-ENHANCED_SELF_DESTRUCT_POWER.title": "改良化自毁程式·I",
+    "MOKUI1270-ENHANCED_SELF_DESTRUCT_POWER_I_I.description": "每次无人机自毁后将一张[gold]无序构筑[/gold]加入手牌中",
+    "MOKUI1270-ENHANCED_SELF_DESTRUCT_POWER_I_I.smartDescription":"每次无人机自毁后将[blue]{Amount}[/blue]张[gold]无序构筑[/gold]加入手牌中",
+    "MOKUI1270-ENHANCED_SELF_DESTRUCT_POWER_I_I.title": "改良化自毁程式·II",
+    "MOKUI1270-BUFFER_PROTOCOL_POWER.description": "每次受到伤害后,回复1血量",
+    "MOKUI1270-BUFFER_PROTOCOL_POWER.smartDescription":"每次受到伤害后,回复[blue]{Amount}[/blue]血量",
+    "MOKUI1270-BUFFER_PROTOCOL_POWER.title": "缓冲协议"
 
 }

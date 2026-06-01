@@ -4,10 +4,7 @@ namespace Mokui1270.Scripts.Cards;
 
 [Pool(typeof(Mokui1270CardPool))]
 
-/// <summary>
-/// 击晕选项卡牌
-/// </summary>
-public class ScatterQi : AbstractMokui1270Card
+public class Slots : AbstractMokui1270Card
 {
     public override bool CanBeGeneratedInCombat => false;
 
@@ -15,7 +12,7 @@ public class ScatterQi : AbstractMokui1270Card
 
 	public override int MaxUpgradeLevel => 0;
 
-    public ScatterQi() : base(-1, CardType.Status, CardRarity.Status, TargetType.None,shouldShowInCardLibrary)
+    public Slots() : base(-1, CardType.Status, CardRarity.Status, TargetType.None,shouldShowInCardLibrary)
     {
     }
 }

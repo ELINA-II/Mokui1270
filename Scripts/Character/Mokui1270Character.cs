@@ -21,6 +21,10 @@ public class Mokui1270Character : PlaceholderCharacterModel
     // 初始血量
     public override int StartingHp => 50;
 
+    // 初始充能球槽位
+    public override int BaseOrbSlotCount => 3;
+
+
     // 人物模型tscn路径。要自定义见下。
     public override string CustomVisualPath => "res://Mokui1270/images/character/Mokui1270.tscn";
     // 卡牌拖尾场景。

@@ -4,7 +4,7 @@
     "MOKUI1270-ATTACK_UAV.title": "攻击无人机",
     "MOKUI1270-DEFEND_UAV.description": "充能球:回合开始时产生格挡",
     "MOKUI1270-DEFEND_UAV.smartDescription": "[gold]被动：[/gold]回合开始时,获得[blue]{Passive}[/blue]点格挡\n[gold]激发：[/gold]获得[blue]{Evoke}[/blue]点格挡",
-    "MOKUI1270-DEFEND_UAV.title": "防御无人机",
+    "MOKUI1270-DEFEND_UAV.title": "护卫无人机",
     "MOKUI1270-HEAL_UAV.description": "充能球:回合开始时治疗",
     "MOKUI1270-HEAL_UAV.smartDescription": "[gold]被动：[/gold]回合开始时,自身回复[blue]{Passive}[/blue]点生命\n[gold]激发：[/gold]所有玩家回复[blue]{Evoke}[/blue]点生命",
     "MOKUI1270-HEAL_UAV.title": "治疗无人机"

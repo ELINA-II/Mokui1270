@@ -26,4 +26,4 @@ position = Vector2(0, -393)
 
 [node name="CenterPos" type="Marker2D" parent="."]
 unique_name_in_owner = true
-position = Vector2(3, -190)
+position = Vector2(1, -205)
