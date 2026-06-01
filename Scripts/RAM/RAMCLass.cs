@@ -1,11 +1,6 @@
-using Godot;
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using MegaCrit.Sts2.Core.Entities.Players;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.Models;
-using MegaCrit.Sts2.Core.Context;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.ValueProps;
 
@@ -30,6 +25,8 @@ public static class RAMClass
     private static readonly Dictionary<Player, PlayerRAMState> _states = new();
     private static readonly PlayerRAMState _defaultState = new();
     private static readonly List<Func<PlayerChoiceContext, Task>> _pendingTriggers = new();
+
+    private static bool _recoveryEnabled = true;//控制能否恢复RAM的开关
 
     // 生命替代配置：1 RAM = 6 生命
     private const int HealthPerRAM = 6;
@@ -111,6 +108,11 @@ public static class RAMClass
         return state.MaxRAM - state.CurrentRAM;
     }
 
+    public static bool IsRecoveryEnabled()
+    {
+        return _recoveryEnabled;
+    }
+
     // ==================== 基础 SET 方法 ====================
 
     public static void SetLastRAMCardPlayed(Player player, CardModel? card)
@@ -154,6 +156,11 @@ public static class RAMClass
             GetState(player).RAMRecoveredThisTurn++;
         
         OnRAMRecover?.Invoke();
+    }
+
+    public static void SetRecoveryEnabled(bool enabled)
+    {
+        _recoveryEnabled = enabled;
     }
 
     // ==================== 检查方法 ====================
@@ -286,6 +293,10 @@ public static class RAMClass
 
     public static async Task RecoverRAM(PlayerChoiceContext choiceContext, int amount, Player player, bool isPassive = false)
     {
+        // 检查是否可以恢复
+        if (!_recoveryEnabled)
+            return;
+
         if (amount <= 0)
             return;
 
@@ -394,6 +405,7 @@ public static class RAMClass
     public static void ResetForTurnStart(Player player)
     {
         var state = GetState(player);
+         _recoveryEnabled = true;
         state.RAMUsedThisTurn = 0;
         state.RAMRecoveredThisTurn = 0;
         OnChanged?.Invoke(player, state.CurrentRAM, state.MaxRAM);
@@ -411,6 +423,7 @@ public static class RAMClass
         state.SlotAUsedThisCombat = 0;
         state.SlotBUsedThisCombat = 0;
         state.LastRAMCardPlayed = null;
+         _recoveryEnabled = true;
         _pendingTriggers.Clear();
     }
 

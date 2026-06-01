@@ -1,7 +1,7 @@
 {
     "MOKUI1270-BLOODATTACK.description": "能量不足时可以5生命值代替1能量打出",
     "MOKUI1270-BLOODATTACK.title": "血战",
-    "MOKUI1270-HACKING.description": "打出时抽一张牌,如果是攻击牌,额外回复伤害量的算力,可用于格挡伤害",
+    "MOKUI1270-HACKING.description": "打出时抽一张牌,如果打出的是攻击牌,额外获得造成伤害等量的格挡",
     "MOKUI1270-HACKING.title": "骇入",
     "MOKUI1270-NANOMACHINE.description": "打出此种牌时,回复所有玩家1生命值",
     "MOKUI1270-NANOMACHINE.title": "纳米蜂群",

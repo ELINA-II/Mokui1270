@@ -2,8 +2,8 @@ using BaseLib.Abstracts;
 using Godot;
 using MegaCrit.Sts2.Core.Entities.Characters;
 using MegaCrit.Sts2.Core.Models;
-using MegaCrit.Sts2.Core.Models.Relics;
 using Mokui1270.Scripts.Cards;
+using Mokui1270.Scripts.Relic;
 namespace Mokui1270.Scripts.Character;
 
 public class Mokui1270Character : PlaceholderCharacterModel
@@ -72,8 +72,8 @@ public class Mokui1270Character : PlaceholderCharacterModel
     public override string CharacterTransitionSfx => "event:/sfx/ui/wipe_ironclad";
 
     public override CardPoolModel CardPool => ModelDb.CardPool<Mokui1270CardPool>();
-    public override RelicPoolModel RelicPool => ModelDb.RelicPool<TestRelicPool>();
-    public override PotionPoolModel PotionPool => ModelDb.PotionPool<TestPotionPool>();
+    public override RelicPoolModel RelicPool => ModelDb.RelicPool<Mokui1270RelicPool>();
+    public override PotionPoolModel PotionPool => ModelDb.PotionPool<Mokui1270PotionPool>();
 
     // 初始卡组
     public override IEnumerable<CardModel> StartingDeck => [
@@ -92,7 +92,7 @@ public class Mokui1270Character : PlaceholderCharacterModel
 
     // 初始遗物
     public override IReadOnlyList<RelicModel> StartingRelics => [
-        ModelDb.Relic<BurningBlood>(),
+        ModelDb.Relic<Hacknet>(),
     ];
 
     // 攻击建筑师的攻击特效列表

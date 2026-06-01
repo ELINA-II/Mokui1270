@@ -1,0 +1,4 @@
+{
+    "MOKUI1270-RAM.description": "此卡牌打出时消耗的RAM,如RAM不足则会尝试以6生命替代1RAM打出,否则仅回复此牌耗能的能量",
+    "MOKUI1270-RAM.title": "内存占用"
+}

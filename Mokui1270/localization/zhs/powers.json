@@ -20,7 +20,6 @@
     "MOKUI1270-FLUID_RECOVERY_POWER.description": "每次使用攻击卡牌对单体敌人造成伤害时，如果伤害来源不是多次伤害，你回复攻击伤害一半的血量",
     "MOKUI1270-FLUID_RECOVERY_POWER.smartDescription":"每次使用攻击卡牌对单体敌人造成伤害时，如果伤害来源不是多次伤害，你回复攻击伤害一半的血量",
     "MOKUI1270-FLUID_RECOVERY_POWER.title": "体液回收",
-    
     "MOKUI1270-MASSIVE_UA_V_BUILDER_ATTACK_POWER.description": "下回合获得两架攻击无人机",
     "MOKUI1270-MASSIVE_UA_V_BUILDER_ATTACK_POWER.smartDescription":"下[blue]{Amount}[/blue]回合获得两架攻击无人机",
     "MOKUI1270-MASSIVE_UA_V_BUILDER_ATTACK_POWER.title": "无人机构筑—攻击无人机",
@@ -38,6 +37,9 @@
     "MOKUI1270-ENHANCED_SELF_DESTRUCT_POWER_I_I.title": "改良化自毁程式·II",
     "MOKUI1270-BUFFER_PROTOCOL_POWER.description": "每次受到伤害后,回复1血量",
     "MOKUI1270-BUFFER_PROTOCOL_POWER.smartDescription":"每次受到伤害后,回复[blue]{Amount}[/blue]血量",
-    "MOKUI1270-BUFFER_PROTOCOL_POWER.title": "缓冲协议"
+    "MOKUI1270-BUFFER_PROTOCOL_POWER.title": "缓冲协议",
+    "MOKUI1270-WATCH_SELF_DESTRUCT_POWER.description": "3回合之内你无法回复RAM,此效果无法消除",
+    "MOKUI1270-WATCH_SELF_DESTRUCT_POWER.smartDescription":"[blue]{Amount}[/blue]回合之内你无法回复RAM",
+    "MOKUI1270-WATCH_SELF_DESTRUCT_POWER.title": "手表重构中!"
 
 }

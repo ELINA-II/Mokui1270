@@ -57,20 +57,16 @@ public abstract class AbstractMokui1270Card : CustomCardModel
     {
     }
 
-    public virtual async Task<bool> couldplay(bool isHack,int ramcost,PlayerChoiceContext context,Player player)
+    public virtual async Task<bool> CouldPlay(int ramCost, PlayerChoiceContext context, Player player)
     {
         if (isHack == true)
         {
-            if(await RAMClass.ConsumeRAM(context, ramcost,player)){
-            return true;
-            }
-            else
-            {
-            return false;
-            }
-        }else{
-        return true;
+            // 尝试消耗 RAM（自动处理生命替代）
+            return await RAMClass.ConsumeRAM(context, ramCost, player);
         }
-
+        else
+        {
+            return true;
+        }
     }
 }
