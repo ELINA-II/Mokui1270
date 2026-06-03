@@ -2,11 +2,9 @@ using BaseLib.Utils;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
-using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
-using MegaCrit.Sts2.Core.Models.Powers;
-using Mokui_1270.Scripts.Powers;
 using Mokui1270.Scripts.Patchs;
+using Mokui1270.Scripts.Powers;
 
 namespace Mokui1270.Scripts.Cards;
 

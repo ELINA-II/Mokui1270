@@ -12,8 +12,10 @@ public class NanofiberSync : AbstractMokui1270Card
     private const int energyCost = 2;
     private const CardType type = CardType.Skill;
     private const CardRarity rarity = CardRarity.Uncommon;
-    private const TargetType targrtType = TargetType.AllEnemies;
+    private const TargetType targrtType = TargetType.AllAllies;
     private const bool shouldShowInCardLibrary = true;
+
+    public override CardMultiplayerConstraint MultiplayerConstraint => CardMultiplayerConstraint.MultiplayerOnly;
     protected override IEnumerable<DynamicVar> CanonicalVars => [
         new HealVar(12),
     ];

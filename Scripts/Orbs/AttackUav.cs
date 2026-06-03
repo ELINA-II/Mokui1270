@@ -58,7 +58,6 @@ public class AttackUav : CustomOrbModel
 		{
 			return Array.Empty<Creature>();
 		}
-		PlayEvokeSfx();
 		Creature weakestEnemy = hittableEnemies.MinBy((Creature c) => c.CurrentHp)!;
 		await CreatureCmd.Damage(playerChoiceContext, weakestEnemy, EvokeVal, ValueProp.Unpowered,Owner.Creature);
 		return [weakestEnemy];

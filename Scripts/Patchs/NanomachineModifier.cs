@@ -1,10 +1,8 @@
 using HarmonyLib;
 using MegaCrit.Sts2.Core.Models;
-using MegaCrit.Sts2.Core.Entities.Cards;
-using MegaCrit.Sts2.Core.Entities.Creatures;
-using System.Linq;
+using MegaCrit.Sts2.Core.Commands;
 using System.Runtime.CompilerServices;
-using System.Reflection;
+using System.Linq;
 using System.Threading.Tasks;
 using Mokui1270.Scripts.Cards;
 
@@ -47,15 +45,15 @@ namespace Mokui1270.NanomachineCostSystem
     /// <summary>
     /// 纳米机器系统 - 打出时给自己和所有队友恢复1点生命值
     /// </summary>
-   [HarmonyPatch]
+    [HarmonyPatch]
     public static class NanomachineHealPatch
     {
-        [HarmonyFinalizer]
+        // 使用 Postfix，返回类型为 void（不匹配原方法的 Task）
+        // 或者使用 async void，但不推荐
+        [HarmonyPostfix]
         [HarmonyPatch(typeof(CardModel), "SpendResources")]
-        public static void SpendResourcesFinalizer(CardModel __instance, Exception __exception)
+        public static void AfterSpendResources(CardModel __instance)
         {
-            if (__exception != null) return;
-            
             if (!NanomachineModifier.ShouldEnableNanomachine(__instance)) return;
             
             var player = __instance.Owner;
@@ -66,12 +64,12 @@ namespace Mokui1270.NanomachineCostSystem
                 .Where(p => p.Creature != null && p.Creature.IsAlive && p.Creature.Side == player.Creature.Side)
                 .ToList();
 
+            // 同步治疗，不使用 await
             foreach (var teammate in allTeammates)
             {
                 var creature = teammate.Creature;
-                int newHp = creature.CurrentHp + 1;
-                if (newHp > creature.MaxHp) newHp = creature.MaxHp;
-                creature.SetCurrentHpInternal(newHp);
+                // 使用同步方法直接治疗
+                creature.HealInternal(1);
             }
         }
     }

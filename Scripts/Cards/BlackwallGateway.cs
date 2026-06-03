@@ -1,11 +1,13 @@
 using BaseLib.Extensions;
 using BaseLib.Utils;
+using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.Entities.Creatures;
 using MegaCrit.Sts2.Core.Entities.Players;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
+using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.ValueProps;
 using Mokui1270.Scripts.Patchs;
 using Mokui1270.Scripts.RAM;
@@ -20,8 +22,6 @@ public class BlackwallGateway : AbstractMokui1270Card
     private const CardRarity rarity = CardRarity.Rare;
     private const TargetType targrtType = TargetType.AnyEnemy;
     private const bool shouldShowInCardLibrary = true;
-
-    private bool _killedEnemyThisPlay = false;
     protected override IEnumerable<DynamicVar> CanonicalVars => [
         new DamageVar(20, ValueProp.Move),
         new CardsVar(1),
@@ -30,6 +30,7 @@ public class BlackwallGateway : AbstractMokui1270Card
 
     public override IEnumerable<CardKeyword> CanonicalKeywords => [
         MyKeyWords.Hacking,
+        CardKeyword.Exhaust,
     ];
 
     public BlackwallGateway() : base(energyCost,type,rarity,targrtType,shouldShowInCardLibrary)
@@ -38,7 +39,6 @@ public class BlackwallGateway : AbstractMokui1270Card
     }
     protected override async Task OnPlay(PlayerChoiceContext choiceContext,CardPlay cardPlay)
     {
-        _killedEnemyThisPlay = false;
         Player player = Owner;
         bool couldPlay = await CouldPlay((int)DynamicVars["Ram"].BaseValue, choiceContext, player);
         if (!couldPlay)
@@ -52,33 +52,37 @@ public class BlackwallGateway : AbstractMokui1270Card
             .Execute(choiceContext))
             .Results.Any((DamageResult r) => r.WasTargetKilled))
             {
-                _killedEnemyThisPlay = true;
                 await PlayerCmd.GainEnergy(EnergyCost.GetAmountToSpend()*2,Owner);
                 await RAMClass.RecoverRAM(choiceContext,(int)DynamicVars["Ram"].BaseValue*2,Owner);
+                await BlackwallGateway.CreateInHand(Owner,CombatState!);
             }
         await CreatureCmd.GainBlock(Owner.Creature,DynamicVars.Damage.PreviewValue,ValueProp.Move | ValueProp.Move,cardPlay);
         await CardPileCmd.Draw(choiceContext,DynamicVars.Cards.BaseValue,Owner);
         }
     }
 
+    
 
-    protected override PileType GetResultPileType()
-	{
-		PileType resultPileType = base.GetResultPileType();
-        if (_killedEnemyThisPlay)
-        {
-            return PileType.Hand;
-        }
-		if (resultPileType != PileType.Discard)
-		{
-			return resultPileType;
-		}
-        return PileType.Discard;
-	}
 
     protected override void OnUpgrade()
     {
         DynamicVars["Ram"].UpgradeValueBy(-2);
         DynamicVars.Damage.UpgradeValueBy(5);
+    }
+
+    public static async Task<CardModel?> CreateInHand(Player owner, CombatState combatState)
+    {
+        return (await CreateInHand(owner, 1, combatState)).FirstOrDefault();
+    }
+    
+    public static async Task<IEnumerable<CardModel>> CreateInHand(Player owner, int count, CombatState combatState)
+    {
+        var blackgateway = new List<CardModel>();
+        for (int i = 0; i < count; i++)
+        {
+            blackgateway.Add(combatState.CreateCard<BlackwallGateway>(owner));
+        }
+        await CardPileCmd.AddGeneratedCardsToCombat(blackgateway, PileType.Hand, addedByPlayer: true);
+        return blackgateway;
     }
 }

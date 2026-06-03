@@ -47,7 +47,6 @@ public class DefendUav : CustomOrbModel
 			throw new InvalidOperationException("Frost orbs cannot target creatures.");
 		}
 		Trigger();
-		PlayPassiveSfx();
 		await CreatureCmd.GainBlock(Owner.Creature, PassiveVal, ValueProp.Unpowered, null);
     }
 

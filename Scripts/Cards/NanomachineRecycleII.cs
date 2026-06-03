@@ -20,6 +20,9 @@ public class NanomachineRecycleII : AbstractMokui1270Card
         HoverTipFactory.FromPower<SneakyPower>()
     };
 
+    public override CardMultiplayerConstraint MultiplayerConstraint => CardMultiplayerConstraint.MultiplayerOnly;
+
+
     public override IEnumerable<CardKeyword> CanonicalKeywords => [MyKeyWords.Nanomachine];
     
     public NanomachineRecycleII() : base(2, CardType.Power, CardRarity.Rare, TargetType.AllAllies, true)

@@ -46,14 +46,12 @@ public class HealUav : CustomOrbModel
 			throw new InvalidOperationException("HEALUAV cannot target creatures.");
 		}
 		Trigger();
-		PlayPassiveSfx();
 		await CreatureCmd.Heal(Owner.Creature, PassiveVal);
     }
 
     // 触发激发，返回受影响的角色
     public override async Task<IEnumerable<Creature>> Evoke(PlayerChoiceContext playerChoiceContext)
     {
-        PlayEvokeSfx();
 		var allPlayers = CombatState.Players
             .Where(p => p.Creature.IsAlive)
             .Select(p => p.Creature)
@@ -63,9 +61,6 @@ public class HealUav : CustomOrbModel
         {
             return Array.Empty<Creature>();
         }
-        
-        // 播放激发音效
-        PlayEvokeSfx();
         
         // 给所有玩家回复血量
         foreach (var player in allPlayers)

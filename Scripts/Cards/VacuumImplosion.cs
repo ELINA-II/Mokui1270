@@ -56,6 +56,5 @@ public class VacuumImplosion : AbstractMokui1270Card
     protected override void OnUpgrade()
     {
         DynamicVars["Ram"].UpgradeValueBy(-1);
-        DynamicVars.Damage.UpgradeValueBy(2);
     }
 }

@@ -2,12 +2,10 @@ using BaseLib.Extensions;
 using BaseLib.Utils;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
-using MegaCrit.Sts2.Core.Entities.Creatures;
 using MegaCrit.Sts2.Core.Entities.Players;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
-using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Models.Powers;
 using MegaCrit.Sts2.Core.ValueProps;
 using Mokui1270.Scripts.Patchs;
@@ -23,18 +21,6 @@ public class ThousandDagger : AbstractMokui1270Card
     private const CardRarity rarity = CardRarity.Ancient;
     private const TargetType targrtType = TargetType.AnyEnemy;
     private const bool shouldShowInCardLibrary = true;
-    protected override IEnumerable<DynamicVar> CanonicalVars => [
-        new DamageVar(1, ValueProp.Move),
-        new CardsVar(1),
-        new EnergyVar(energyCost),
-        new DynamicVar("Ram", ramCost).WithTooltip("MOKUI1270-RAM"),
-        new CalculationBaseVar(0m),                  // 基础攻击次数（可选）
-        new CalculationExtraVar(2m),                 // 额外攻击次数增量
-        new CalculatedVar("CalculatedHits").WithMultiplier((CardModel card, Creature? _) =>
-            {
-                Player player = Owner;
-                return RAMClass.GetCurrentRAM(player);
-            })];
 
     public override IEnumerable<CardKeyword> CanonicalKeywords => [
         MyKeyWords.Hacking,
@@ -48,33 +34,52 @@ public class ThousandDagger : AbstractMokui1270Card
     {
         isHack = true;
     }
-    protected override async Task OnPlay(PlayerChoiceContext choiceContext,CardPlay cardPlay)
-    {
-        Player player = Owner;
-        int currentRAM = RAMClass.GetCurrentRAM(player);
-        await RAMClass.ConsumeRAM(choiceContext, currentRAM, player); 
-        if (cardPlay.Target!.HasPower<SlipperyPower>())
-        {
-            await DamageCmd.Attack(DynamicVars.Damage.BaseValue)
-            .WithHitCount((int)((CalculatedVar)DynamicVars["CalculatedHits"]).Calculate(cardPlay.Target)*2)
-            .FromCard(this)
-            .Targeting(cardPlay.Target!)
-            .Execute(choiceContext);
-        }
-        else
-        {
-            await DamageCmd.Attack(DynamicVars.Damage.BaseValue)
-            .WithHitCount((int)((CalculatedVar)DynamicVars["CalculatedHits"]).Calculate(cardPlay.Target))
-            .FromCard(this)
-            .Targeting(cardPlay.Target!)
-            .Execute(choiceContext);
-        }
-        await CardPileCmd.Draw(choiceContext,DynamicVars.Cards.BaseValue,Owner);
-    }
 
-    protected override void OnUpgrade()
-    {
-        DynamicVars.Damage.UpgradeValueBy(1);
-        DynamicVars["CalculatedHits"].UpgradeValueBy(1);
-    }
+    protected override IEnumerable<DynamicVar> CanonicalVars => [
+    new DamageVar(1, ValueProp.Move),
+    new CardsVar(1),
+    new EnergyVar(energyCost),
+    new DynamicVar("Ram", ramCost).WithTooltip("MOKUI1270-RAM"),
+    new CalculationBaseVar(0m),      // 基础值（会被乘数乘以）
+    new CalculationExtraVar(2m),     // 额外乘数
+    new CalculatedVar("HitCount")
+        .WithMultiplier(static (card, target) => 
+        {
+            // 使用静态 lambda，通过 card.Owner 获取玩家
+            Player player = card.Owner;
+            int ram = RAMClass.GetCurrentRAM(player);
+            
+            // 如果目标有 SlipperyPower，返回双倍
+            if (target != null && target.HasPower<SlipperyPower>())
+            {
+                return ram * 2;
+            }
+            return ram;
+        })
+];
+
+protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
+{
+    Player player = Owner;
+    int currentRAM = RAMClass.GetCurrentRAM(player);
+    
+    // 获取计算后的攻击次数
+    int hitCount = (int)((CalculatedVar)DynamicVars["HitCount"]).Calculate(cardPlay.Target);
+    
+    // 执行攻击
+    await DamageCmd.Attack(DynamicVars.Damage.BaseValue)
+        .WithHitCount(hitCount)
+        .FromCard(this)
+        .Targeting(cardPlay.Target!)
+        .Execute(choiceContext);
+    
+    await CardPileCmd.Draw(choiceContext, DynamicVars.Cards.BaseValue, Owner);
+    await RAMClass.ConsumeRAM(choiceContext, currentRAM, player);
+}
+
+protected override void OnUpgrade()
+{
+    DynamicVars.Damage.UpgradeValueBy(1);
+}
+
 }

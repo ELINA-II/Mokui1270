@@ -14,8 +14,10 @@ public class NanoHealCloud : AbstractMokui1270Card
     private const int energyCost = 1;
     private const CardType type = CardType.Skill;
     private const CardRarity rarity = CardRarity.Uncommon;
-    private const TargetType targrtType = TargetType.AnyPlayer;
+    private const TargetType targrtType = TargetType.AnyAlly;
     private const bool shouldShowInCardLibrary = true;
+
+    public override CardMultiplayerConstraint MultiplayerConstraint => CardMultiplayerConstraint.MultiplayerOnly;
     protected override IEnumerable<DynamicVar> CanonicalVars => [
         new PowerVar<RegenPower>(5),
         new EnergyVar(1),

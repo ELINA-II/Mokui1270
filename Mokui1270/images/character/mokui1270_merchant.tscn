@@ -2,13 +2,9 @@
 
 [ext_resource type="SpineSkeletonDataResource" uid="uid://c615hkj8naerp" path="res://Mokui1270.tres" id="1_j08is"]
 
-[node name="Mokui1270Merchant" type="Node2D"]
-show_behind_parent = true
-
-[node name="SpineSprite" type="SpineSprite" parent="."]
+[node name="Mokui1270Merchant" type="SpineSprite"]
 skeleton_data_res = ExtResource("1_j08is")
 preview_skin = "Default"
 preview_animation = "idle_loop"
 preview_frame = false
 preview_time = 0.0
-scale = Vector2(1.5, 1.5)

@@ -15,7 +15,7 @@ public class MemorySwap : AbstractMokui1270Card
     private const int energyCost = 1;
     private const CardType type = CardType.Skill;
     private const CardRarity rarity = CardRarity.Common;
-    private const TargetType targrtType = TargetType.AnyEnemy;
+    private const TargetType targrtType = TargetType.Self;
     private const bool shouldShowInCardLibrary = true;
     protected override IEnumerable<DynamicVar> CanonicalVars => [
         new CardsVar(1),

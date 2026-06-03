@@ -23,7 +23,8 @@ public class RoundslashThree : AbstractMokui1270Card
     protected override IEnumerable<DynamicVar> CanonicalVars => [
         new DamageVar(15, ValueProp.Move),
         new EnergyVar(2),
-        new PowerVar<StrengthPower>(3m)
+        new PowerVar<StrengthPower>(3m),
+        new CardsVar(1),
     ];
 
     protected override IEnumerable<IHoverTip> ExtraHoverTips => [

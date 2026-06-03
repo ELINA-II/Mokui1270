@@ -14,8 +14,10 @@ public class NaniteSwarmWall : AbstractMokui1270Card
     private const int energyCost = 2;
     private const CardType type = CardType.Skill;
     private const CardRarity rarity = CardRarity.Rare;
-    private const TargetType targrtType = TargetType.AnyPlayer;
+    private const TargetType targrtType = TargetType.AnyAlly;
     private const bool shouldShowInCardLibrary = true;
+
+    public override CardMultiplayerConstraint MultiplayerConstraint => CardMultiplayerConstraint.MultiplayerOnly;
     protected override IEnumerable<DynamicVar> CanonicalVars => [
         new PowerVar<IntangiblePower>(1m),
     ];

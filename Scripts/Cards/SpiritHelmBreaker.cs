@@ -62,7 +62,7 @@ public class SpiritHelmBreaker : AbstractMokui1270Card
         var SpiritHelmBreaker = new List<CardModel>();
         for (int i = 0; i < count; i++)
         {
-            SpiritHelmBreaker.Add(combatState.CreateCard<RoundslashThree>(owner));
+            SpiritHelmBreaker.Add(combatState.CreateCard<SpiritHelmBreaker>(owner));
         }
         await CardPileCmd.AddGeneratedCardsToCombat(SpiritHelmBreaker, PileType.Hand, addedByPlayer: true);
         return SpiritHelmBreaker;

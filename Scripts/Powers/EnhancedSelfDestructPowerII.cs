@@ -23,8 +23,6 @@ public class EnhancedSelfDestructPowerII : CustomPowerModel
         if (orb.Owner == Owner.Player){
         for (int i = 0; i < Amount; i++)
             {
-                CardModel newCard = Owner.Player.RunState.CreateCard(ModelDb.Card<RandomBuild>(),Owner.Player);
-                await CardPileCmd.AddGeneratedCardToCombat(newCard, PileType.Hand, addedByPlayer: true);
-            }
-    }}
+                await RandomBuild.CreateInHand(Owner.Player,CombatState);
+    }}}
 }

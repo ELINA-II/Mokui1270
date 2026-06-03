@@ -1,0 +1,43 @@
+[gd_scene load_steps=3 format=3 uid="uid://dxlkol7fgffqy"]
+
+[ext_resource type="Script" uid="uid://dpsbbkxoots8a" path="res://Mokui1270/images/character/Mokui1270NRestSiteCharacter.cs" id="1_xfgjq"]
+[ext_resource type="Texture2D" uid="uid://c7wwdse8w5s1n" path="res://Mokui1270/images/character/MokuiNotebook.png" id="2_lfbj4"]
+
+[node name="MokuiRestSite" type="Node2D"]
+position = Vector2(-2, 42)
+scale = Vector2(0.76, 0.76)
+script = ExtResource("1_xfgjq")
+
+[node name="SpineSprite" type="Sprite2D" parent="."]
+position = Vector2(10.526306, -6.578949)
+scale = Vector2(0.22402556, 0.25445274)
+texture = ExtResource("2_lfbj4")
+
+[node name="ControlRoot" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Hitbox" type="Control" parent="ControlRoot"]
+anchors_preset = 0
+offset_left = -167.10527
+offset_top = -251.31578
+offset_right = 160.52632
+offset_bottom = 261.84204
+
+[node name="ThoughtBubbleRight" type="Control" parent="ControlRoot"]
+anchors_preset = 0
+offset_left = 218.42105
+offset_top = -231.57895
+offset_right = 258.42105
+offset_bottom = -191.57895
+
+[node name="ThoughtBubbleLeft" type="Control" parent="ControlRoot"]
+anchors_preset = 0
+offset_left = -284.2105
+offset_top = -276.3158
+offset_right = -244.21051
+offset_bottom = -236.3158

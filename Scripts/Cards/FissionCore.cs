@@ -17,8 +17,10 @@ public class FissionCore : AbstractMokui1270Card
     protected override IEnumerable<IHoverTip> ExtraHoverTips => [
         HoverTipFactory.FromOrb<PlasmaOrb>(),
     ];
+
+    public override CardMultiplayerConstraint MultiplayerConstraint => CardMultiplayerConstraint.MultiplayerOnly;
     
-    public FissionCore() : base(2, CardType.Skill, CardRarity.Rare, TargetType.AnyPlayer, true)
+    public FissionCore() : base(2, CardType.Skill, CardRarity.Rare, TargetType.AnyAlly, true)
     {
         isNanomachine = true;
     }

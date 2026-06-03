@@ -5,9 +5,7 @@ using BaseLib.Abstracts;
 using MegaCrit.Sts2.Core.Entities.Powers;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.ValueProps;
-using Mokui1270.Scripts.Powers;
-
-namespace Mokui_1270.Scripts.Powers
+namespace Mokui1270.Scripts.Powers
 {
     /// <summary>
     /// 免死能力 - 受到致命伤害时触发，激活绝境姿态

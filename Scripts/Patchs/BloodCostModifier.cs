@@ -10,6 +10,7 @@ using MegaCrit.Sts2.Core.ValueProps;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.Context;
 using MegaCrit.Sts2.Core.Entities.Multiplayer;
+using MegaCrit.Sts2.Core.Entities.Creatures;
 
 namespace Mokui1270.BloodCostSystem
 {
@@ -137,33 +138,22 @@ namespace Mokui1270.BloodCostSystem
             {
                 MarkUsed(__instance, combatState);
             }
-
-            // 异步造成伤害，避免阻塞游戏主线程
-            _ = Task.Run(async () =>
-            {
-                try
-                {
-                    // 获取本地玩家 ID
-                    ulong localPlayerId = LocalContext.NetId ?? player.NetId;
-                    
-                    // 创建 choiceContext
-                    var choiceContext = new HookPlayerChoiceContext(__instance, localPlayerId, combatState, GameActionType.Combat);
-                    
-                    // 造成伤害（不可格挡、无力量加成、移动类型）
-                    await CreatureCmd.Damage(
-                        choiceContext, 
-                        player.Creature, 
-                        damageAmount, 
-                        ValueProp.Unblockable | ValueProp.Unpowered | ValueProp.Move, 
-                        __instance
-                    );
-                }
-                catch
-                {
-                    // 如果伤害失败，回退到直接扣血
-                    player.Creature.SetCurrentHpInternal(player.Creature.CurrentHp - damageAmount);
-                }
-            });
-        }
+             _ = ApplyBloodDamage(player, player.Creature, __instance, damageAmount, combatState);
+}
+private static async Task ApplyBloodDamage(Player player, Creature creature, CardModel card, int damageAmount, CombatState combatState)
+{
+    try
+    {
+        ulong localPlayerId = LocalContext.NetId ?? player.NetId;
+        var choiceContext = new HookPlayerChoiceContext(card, localPlayerId, combatState, GameActionType.Combat);
+        
+        await CreatureCmd.Damage(choiceContext, creature, damageAmount, 
+            ValueProp.Unblockable | ValueProp.Unpowered | ValueProp.Move, card);
+    }
+    catch
+    {
+        creature.SetCurrentHpInternal(creature.CurrentHp - damageAmount);
+    }
+    }
     }
 }

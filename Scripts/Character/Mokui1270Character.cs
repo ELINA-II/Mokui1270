@@ -28,7 +28,7 @@ public class Mokui1270Character : PlaceholderCharacterModel
     // 人物模型tscn路径。要自定义见下。
     public override string CustomVisualPath => "res://Mokui1270/images/character/Mokui1270.tscn";
     // 卡牌拖尾场景。
-    // public override string CustomTrailPath => "res://scenes/vfx/card_trail_ironclad.tscn";
+    public override string CustomTrailPath => "res://scenes/vfx/card_trail_ironclad.tscn";
     // 人物头像路径。
     public override string CustomIconTexturePath => "res://Mokui1270/images/character/Mokui1270.svg";
     // 人物头像2号。
@@ -36,7 +36,7 @@ public class Mokui1270Character : PlaceholderCharacterModel
     // 能量表盘tscn路径。要自定义见下。
     public override string CustomEnergyCounterPath => "res://Mokui1270/images/character/Mokui1270Energy.tscn";
     // 篝火休息场景。
-    // public override string CustomRestSiteAnimPath => "res://scenes/rest_site/characters/ironclad_rest_site.tscn";
+    //public override string CustomRestSiteAnimPath => "res://Mokui1270/images/character/Mokui1270_rest.tscn";
     // 商店人物场景。
     public override string CustomMerchantAnimPath => "res://Mokui1270/images/character/mokui1270_merchant.tscn";
     // 多人模式-手指。
@@ -61,15 +61,15 @@ public class Mokui1270Character : PlaceholderCharacterModel
 
     // 在baselib3.1.1之后，音效可以使用例如"res://test/audios/test.wav"这样的资源路径了
     // 攻击音效
-    // public override string CustomAttackSfx => null;
+    public override string CustomAttackSfx => "res://Mokui1270/audios/Attack.wav";
     // 施法音效
     // public override string CustomCastSfx => null;
     // 死亡音效
-    // public override string CustomDeathSfx => null;
+    public override string CustomDeathSfx => "res://Mokui1270/audios/Die.wav";
     // 角色选择音效
-    // public override string CharacterSelectSfx => null;
+    public override string CharacterSelectSfx => "res://Mokui1270/audios/BBEE.wav";
     // 过渡音效。这个不能删。
-    public override string CharacterTransitionSfx => "event:/sfx/ui/wipe_ironclad";
+    public override string CharacterTransitionSfx => "res://Mokui1270/audios/Chose.wav";
 
     public override CardPoolModel CardPool => ModelDb.CardPool<Mokui1270CardPool>();
     public override RelicPoolModel RelicPool => ModelDb.RelicPool<Mokui1270RelicPool>();
@@ -96,11 +96,5 @@ public class Mokui1270Character : PlaceholderCharacterModel
     ];
 
     // 攻击建筑师的攻击特效列表
-    public override List<string> GetArchitectAttackVfx() => [
-        "vfx/vfx_attack_blunt",
-        "vfx/vfx_heavy_blunt",
-        "vfx/vfx_attack_slash",
-        "vfx/vfx_bloody_impact",
-        "vfx/vfx_rock_shatter"
-    ];
+    //public override List<string> GetArchitectAttackVfx() => [];
 }
