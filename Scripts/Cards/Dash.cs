@@ -38,7 +38,6 @@ public class Dash : AbstractMokui1270Card
     
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
-        var power = new Dash().ToMutable();
         await PowerCmd.Apply<DashPower>(Owner.Creature,DynamicVars["DashPower"].BaseValue, Owner.Creature, this);
     }
     
