@@ -24,4 +24,11 @@ public static class HealTrackerPatch
     {
         HealTracker.ClearAll();  // 需要添加 ClearAll 方法
     }
+
+    [HarmonyPrefix]
+    [HarmonyPatch(typeof(Hook), nameof(Hook.BeforeCombatStart))]
+        public static void OnBeforeCombatStart(IRunState runState, CombatState? combatState)
+        {
+            HealTracker.ClearAll();
+        }
 }

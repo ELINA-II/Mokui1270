@@ -2,7 +2,6 @@ using BaseLib.Utils;
 using MegaCrit.Sts2.Core.CardSelection;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
-using MegaCrit.Sts2.Core.Entities.Creatures;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
@@ -20,12 +19,6 @@ public class InchPunch : AbstractMokui1270Card
     private const int X_CARD_HEAL = 8;
     private const float DAMAGE_MULTIPLIER = 5f;
     private const float HEAL_MULTIPLIER = 4f;
-    
-    // 存储待处理的数据
-    private CardModel? _pendingCard = null;
-    private Creature? _pendingTarget = null;
-    private int _pendingDamage = 0;
-    private int _pendingHeal = 0;
     
     protected override IEnumerable<DynamicVar> CanonicalVars => [
         new DamageVar(BASE_DAMAGE, ValueProp.Move)
@@ -48,58 +41,41 @@ public class InchPunch : AbstractMokui1270Card
     {
         ArgumentNullException.ThrowIfNull(cardPlay.Target, nameof(cardPlay.Target));
         
-        // 存储目标
-        _pendingTarget = cardPlay.Target;
-        
         // 选择要消耗的卡牌
         var prefs = new CardSelectorPrefs(CardSelectorPrefs.ExhaustSelectionPrompt, 1)
         {
             Cancelable = true,
         };
         
-        var selectedCard = (await CardSelectCmd.FromHand(
+        var selectedCards = await CardSelectCmd.FromHand(
             prefs: prefs,
             context: choiceContext,
             player: Owner,
             filter: null,
             source: this
-        )).FirstOrDefault();
+        );
+        
+        var selectedCard = selectedCards.FirstOrDefault();
         
         if (selectedCard == null) return;
         
         // 计算伤害和治疗量
-        (_pendingDamage, _pendingHeal) = CalculateValues(selectedCard);
-        _pendingCard = selectedCard;
+        var (damage, heal) = CalculateValues(selectedCard);
         
-        // 消耗卡牌
+        // 先消耗卡牌
         await CardCmd.Exhaust(choiceContext, selectedCard);
         
-        // 注意：不在 OnPlay 中执行伤害，让 AfterCardPlayed 来处理
-    }
-    
-    public override async Task AfterCardPlayed(PlayerChoiceContext choiceContext, CardPlay cardPlay)
-    {
-        await base.AfterCardPlayed(choiceContext, cardPlay);
-        
-        if (_pendingCard == null || _pendingTarget == null) return;
-        
         // 造成伤害
-        await DamageCmd.Attack(_pendingDamage)
+        await DamageCmd.Attack(damage)
             .FromCard(this)
-            .Targeting(_pendingTarget)
+            .Targeting(cardPlay.Target)
             .Execute(choiceContext);
         
         // 回复生命
-        if (_pendingHeal > 0)
+        if (heal > 0)
         {
-            await CreatureCmd.Heal(Owner.Creature, _pendingHeal);
+            await CreatureCmd.Heal(Owner.Creature, heal);
         }
-        
-        // 清理数据
-        _pendingCard = null;
-        _pendingTarget = null;
-        _pendingDamage = 0;
-        _pendingHeal = 0;
     }
     
     private (int damage, int heal) CalculateValues(CardModel card)
