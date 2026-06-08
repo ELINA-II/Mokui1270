@@ -43,8 +43,7 @@ public class InchPunch : AbstractMokui1270Card
         
         // 选择要消耗的卡牌
         var prefs = new CardSelectorPrefs(CardSelectorPrefs.ExhaustSelectionPrompt, 1)
-        {
-            Cancelable = true,
+        {            
         };
         
         var selectedCards = await CardSelectCmd.FromHand(

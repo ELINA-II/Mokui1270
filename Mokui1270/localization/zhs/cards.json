@@ -120,7 +120,7 @@
     "MOKUI1270-ENHANCED_SELF_DESTRUCT.title":"改良化自毁程式·I",
     "MOKUI1270-ENHANCED_SELF_DESTRUCT.description":"无人机自毁后对随机一名敌人造成4伤害",
     "MOKUI1270-ENHANCED_SELF_DESTRUCT_I_I.title":"改良化自毁程式·II",
-    "MOKUI1270-ENHANCED_SELF_DESTRUCT_I_I.description":"每次无人机自毁后将一张[gold]无序构筑[/gold]加入手牌中",
+    "MOKUI1270-ENHANCED_SELF_DESTRUCT_I_I.description":"每次无人机自毁后将一张[gold]快速无人机构筑[/gold]加入手牌中",
     "MOKUI1270-NANOMACHINE_RECYCLE_I_I.title":"纳米回收机制II",
     "MOKUI1270-NANOMACHINE_RECYCLE_I_I.description":"所有玩家获得[gold]鬼祟[/gold]效果",
     "MOKUI1270-BUFFER_PROTOCOL.title":"缓冲协议",
@@ -151,14 +151,26 @@
     "MOKUI1270-IMPAIR.title":"快速破解:行动限制",
     "MOKUI1270-IMPAIR.description":"[gold]内存占用[/gold]{Ram:diff()},施加1层缓慢",
     "MOKUI1270-WATCH_SELF_DESTRUCT.title":"手表自毁程式",
-    "MOKUI1270-WATCH_SELF_DESTRUCT.description":"消耗所有RAM,所有敌人失去最大生命值一半的血量,3回合内RAM不可回复",
+    "MOKUI1270-WATCH_SELF_DESTRUCT.description":"消耗所有RAM,所有敌人失去当前生命值一半的血量,3回合内RAM不可回复",
     "MOKUI1270-SWAP.title":"S.W.A.P",
     "MOKUI1270-SWAP.description":"RAM上限增加2",
     
     
     
     "MOKUI1270-DOUBLE_SHOOT.title":"霰弹二连发",
-    "MOKUI1270-DOUBLE_SHOOT.description":"造成{Damage:diff()}点伤害两次"
+    "MOKUI1270-DOUBLE_SHOOT.description":"造成{Damage:diff()}点伤害两次",
+
+    "MOKUI1270-FULL_SALVO.title":"全弹发射",
+    "MOKUI1270-FULL_SALVO.description":"丢弃所有手牌,每丢弃一张牌就对指定敌人造成一次{Damage:diff()}点伤害,之后抽取等量手牌",
+    "MOKUI1270-ARC_WAVE.title":"电弧波",
+    "MOKUI1270-ARC_WAVE.description":"对所有敌人造成{Damage:diff()}点伤害3次并施加{VulnerablePower:diff()}层[gold]易伤[/gold]",
+    "MOKUI1270-TERMINATOR.title":"恶意终结者",
+    "MOKUI1270-TERMINATOR.description":"你损失一半的当前生命值,你的攻击伤害变为3倍",
+    "MOKUI1270-NUCLEAR_PATH.title":"核能奔涌",
+    "MOKUI1270-NUCLEAR_PATH.description":"获得{VulnerablePower:diff()}层[gold]易伤[/gold],获得{StrengthPower:diff()}层[gold]力量[/gold]",
+    "MOKUI1270-IRON_GUARD.title":"铁卫模式",
+    "MOKUI1270-IRON_GUARD.description":"每回合给予所有队友1无实体,但你本人受到所有人应受到的伤害"
+    
     
 
 }

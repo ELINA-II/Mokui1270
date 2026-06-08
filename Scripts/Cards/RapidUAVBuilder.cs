@@ -1,6 +1,8 @@
 using BaseLib.Utils;
+using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
+using MegaCrit.Sts2.Core.Entities.Players;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Models;
@@ -81,5 +83,21 @@ public class RapidUAVBuilder : AbstractMokui1270Card
     protected override void OnUpgrade()
     {
         EnergyCost.UpgradeBy(-1);
+    }
+
+    public static async Task<CardModel?> CreateInHand(Player owner, CombatState combatState)
+    {
+        return (await CreateInHand(owner, 1, combatState)).FirstOrDefault();
+    }
+    
+    public static async Task<IEnumerable<CardModel>> CreateInHand(Player owner, int count, CombatState combatState)
+    {
+        var rapidbuild = new List<CardModel>();
+        for (int i = 0; i < count; i++)
+        {
+            rapidbuild.Add(combatState.CreateCard<RapidUAVBuilder>(owner));
+        }
+        await CardPileCmd.AddGeneratedCardsToCombat(rapidbuild, PileType.Hand, addedByPlayer: true);
+        return rapidbuild;
     }
 }

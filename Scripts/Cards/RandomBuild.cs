@@ -75,7 +75,7 @@ public class RandomBuild : AbstractMokui1270Card
         RemoveKeyword(CardKeyword.Exhaust);
     }
 
-     public static async Task<CardModel?> CreateInHand(Player owner, CombatState combatState)
+    public static async Task<CardModel?> CreateInHand(Player owner, CombatState combatState)
     {
         return (await CreateInHand(owner, 1, combatState)).FirstOrDefault();
     }

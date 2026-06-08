@@ -61,7 +61,7 @@ public class WatchSelfDestruct : AbstractMokui1270Card
         await CreatureCmd.Damage(
             choiceContext,
             hittableEnemy,      // 目标生物
-            hittableEnemy.MaxHp/2,                  // 伤害值
+            hittableEnemy.CurrentHp/2,                  // 伤害值
             ValueProp.Unblockable, // 属性
             this       // 来源生物
             );

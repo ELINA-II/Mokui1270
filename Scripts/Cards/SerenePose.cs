@@ -29,7 +29,8 @@ public class SerenePose : AbstractMokui1270Card
     }
 
     public override IEnumerable<CardKeyword> CanonicalKeywords => [
-        MyKeyWords.BloodAttack
+        MyKeyWords.BloodAttack,
+        CardKeyword.Exhaust,
     ];
 
     protected override IEnumerable<IHoverTip> ExtraHoverTips => [

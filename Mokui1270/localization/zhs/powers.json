@@ -14,8 +14,8 @@
     "MOKUI1270-HEROICS_READY_POWER.description": "本场战斗内受到致死伤害时,免死且血量锁死为1,激活火场怪力效果",
     "MOKUI1270-HEROICS_READY_POWER.smartDescription":"本场战斗内受到致死伤害时,免死且血量锁死为1,激活火场怪力效果",
     "MOKUI1270-HEROICS_READY_POWER.title": "火场怪力_就绪",
-    "MOKUI1270-HEROICS_ACTIVE_POWER.description": "每回合获得{Energy:energyIcons()} {Energy:energyIcons()} {Energy:energyIcons()}与3临时力量,免疫受到的伤害,持续3回合",
-    "MOKUI1270-HEROICS_ACTIVE_POWER.smartDescription":"每回合获得{Energy:energyIcons()} {Energy:energyIcons()} {Energy:energyIcons()}与3临时力量,免疫受到的伤害,剩余[blue]{Amount}[/blue]回合",
+    "MOKUI1270-HEROICS_ACTIVE_POWER.description": "每回合获得3额外能量与3临时力量,免疫受到的伤害,持续3回合",
+    "MOKUI1270-HEROICS_ACTIVE_POWER.smartDescription":"每回合获得3额外能量与3临时力量,免疫受到的伤害,剩余[blue]{Amount}[/blue]回合",
     "MOKUI1270-HEROICS_ACTIVE_POWER.title": "火场怪力_激活",
     "MOKUI1270-FLUID_RECOVERY_POWER.description": "每次使用攻击卡牌对单体敌人造成伤害时，如果伤害来源不是多次伤害，你回复攻击伤害一半的血量",
     "MOKUI1270-FLUID_RECOVERY_POWER.smartDescription":"每次使用攻击卡牌对单体敌人造成伤害时，如果伤害来源不是多次伤害，你回复攻击伤害一半的血量",
@@ -33,13 +33,19 @@
     "MOKUI1270-ENHANCED_SELF_DESTRUCT_POWER.smartDescription":"无人机自毁后对随机一名敌人造成[blue]{Amount}[/blue]伤害",
     "MOKUI1270-ENHANCED_SELF_DESTRUCT_POWER.title": "改良化自毁程式·I",
     "MOKUI1270-ENHANCED_SELF_DESTRUCT_POWER_I_I.description": "每次无人机自毁后将一张[gold]无序构筑[/gold]加入手牌中",
-    "MOKUI1270-ENHANCED_SELF_DESTRUCT_POWER_I_I.smartDescription":"每次无人机自毁后将[blue]{Amount}[/blue]张[gold]无序构筑[/gold]加入手牌中",
+    "MOKUI1270-ENHANCED_SELF_DESTRUCT_POWER_I_I.smartDescription":"每次无人机自毁后将[blue]{Amount}[/blue]张[gold]快速无人机构筑[/gold]加入手牌中",
     "MOKUI1270-ENHANCED_SELF_DESTRUCT_POWER_I_I.title": "改良化自毁程式·II",
     "MOKUI1270-BUFFER_PROTOCOL_POWER.description": "每次受到伤害后,回复1血量",
     "MOKUI1270-BUFFER_PROTOCOL_POWER.smartDescription":"每次受到伤害后,回复[blue]{Amount}[/blue]血量",
     "MOKUI1270-BUFFER_PROTOCOL_POWER.title": "缓冲协议",
     "MOKUI1270-WATCH_SELF_DESTRUCT_POWER.description": "3回合之内你无法回复RAM,此效果无法消除",
     "MOKUI1270-WATCH_SELF_DESTRUCT_POWER.smartDescription":"[blue]{Amount}[/blue]回合之内你无法回复RAM",
-    "MOKUI1270-WATCH_SELF_DESTRUCT_POWER.title": "手表重构中!"
+    "MOKUI1270-WATCH_SELF_DESTRUCT_POWER.title": "手表重构中!",
+    "MOKUI1270-TERMINATOR_POWER.description": "你的攻击牌伤害变为3倍",
+    "MOKUI1270-TERMINATOR_POWER.smartDescription":"你的攻击牌伤害变为[blue]3[/blue]倍",
+    "MOKUI1270-TERMINATOR_POWER.title": "模式:恶意终结者",
+    "MOKUI1270-IRON_GUARD_POWER.description":"每回合给予所有队友1无实体,但你本人受到所有人应受到的伤害",
+    "MOKUI1270-IRON_GUARD_POWER.smartDescription":"每回合给予所有队友1无实体,但你本人受到[blue]{Amount}[/blue]倍伤害",
+    "MOKUI1270-IRON_GUARD_POWER.title": "铁卫模式"
 
 }

@@ -21,15 +21,15 @@ public class HacknetPlus : CustomRelicModel
     protected override IEnumerable<DynamicVar> CanonicalVars => [new CardsVar(1)];
 
     // 小图标（原版85x85）
-    public override string PackedIconPath => $"res://Mokui1270/images/relics/{Id.Entry.ToLowerInvariant()}.png";
+    public override string PackedIconPath => $"res://Mokui1270/images/relics/{GetType().Name}.png";
     // 轮廓图标（原版85x85）
-    protected override string PackedIconOutlinePath => $"res://Mokui1270/images/relics/{Id.Entry.ToLowerInvariant()}.png";
+    protected override string PackedIconOutlinePath => $"res://Mokui1270/images/relics/{GetType().Name}Outline.png";
     // 大图标（原版256x256）
-    protected override string BigIconPath => $"res://Mokui1270/images/relics/{Id.Entry.ToLowerInvariant()}.png";
+    protected override string BigIconPath => $"res://Mokui1270/images/relics/{GetType().Name}Big.png";
 
     public override async Task AfterPlayerTurnStart(PlayerChoiceContext choiceContext, Player player)
     {
-        // 这里的DynamicVars.Cards.IntValue为上面设置的CardsVar的数值。
+        await CreatureCmd.Heal(Owner.Creature,5);
         await RAMClass.RecoverRAM(choiceContext,2, player);
     }
 

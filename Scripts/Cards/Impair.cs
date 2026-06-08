@@ -48,7 +48,7 @@ public class Impair : AbstractMokui1270Card
             await CardPileCmd.Draw(choiceContext,DynamicVars.Cards.BaseValue,Owner);
             await PlayerCmd.GainEnergy(DynamicVars.Energy.BaseValue,Owner);
         }else{
-        await PowerCmd.Apply<SlowPower>(CombatState!.HittableEnemies,DynamicVars["SlowPower"].BaseValue,Owner.Creature, this);
+        await PowerCmd.Apply<SlowPower>(cardPlay.Target!,DynamicVars["SlowPower"].BaseValue,Owner.Creature, this);
         await CardPileCmd.Draw(choiceContext,DynamicVars.Cards.BaseValue,Owner);
         }
     }

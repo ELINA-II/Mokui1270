@@ -23,6 +23,6 @@ public class EnhancedSelfDestructPowerII : CustomPowerModel
         if (orb.Owner == Owner.Player){
         for (int i = 0; i < Amount; i++)
             {
-                await RandomBuild.CreateInHand(Owner.Player,CombatState);
+                await RapidUAVBuilder.CreateInHand(Owner.Player,CombatState);
     }}}
 }

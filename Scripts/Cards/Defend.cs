@@ -9,6 +9,8 @@ namespace Mokui1270.Scripts.Cards;
 [Pool(typeof(Mokui1270CardPool))]
 public class Defend : AbstractMokui1270Card
 {
+
+    protected override HashSet<CardTag> CanonicalTags => new HashSet<CardTag> { CardTag.Defend };
     private const int energyCost = 1;
     private const CardType type = CardType.Skill;
     private const CardRarity rarity = CardRarity.Basic;
