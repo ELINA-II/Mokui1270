@@ -38,7 +38,7 @@ public class OpeningStance : AbstractMokui1270Card
             .Targeting(cardPlay.Target!)
             .Execute(choiceContext);
         await PlayerCmd.GainEnergy(DynamicVars.Energy.BaseValue,Owner);
-        await PowerCmd.Apply<FreeAttackPower>(Owner.Creature, 1m, Owner.Creature, this);
+        await PowerCmd.Apply<FreeAttackPower>(choiceContext,Owner.Creature, 1m, Owner.Creature, this);
     }
 
     protected override void OnUpgrade()

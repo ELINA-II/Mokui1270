@@ -40,6 +40,7 @@ namespace Mokui1270.Scripts.Powers
                 
                 // 添加绝境姿态能力（持续3回合）
                 await PowerCmd.Apply<HeroicsActivePower>(
+                    choiceContext,
                     target,
                     3,  // 持续3回合
                     target,

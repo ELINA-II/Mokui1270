@@ -38,7 +38,7 @@ public class EnergyRecycler : AbstractMokui1270Card
     /// <summary>
     /// 回合结束时，如果这张牌还在手牌中，将其弃掉
     /// </summary>
-    public override async Task OnTurnEndInHand(PlayerChoiceContext choiceContext)
+    protected override async Task OnTurnEndInHand(PlayerChoiceContext choiceContext)
     {
         if (!IsInHand()) return;
         

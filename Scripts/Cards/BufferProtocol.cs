@@ -30,6 +30,7 @@ public class BufferProtocol : AbstractMokui1270Card
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
         await PowerCmd.Apply<BufferProtocolPower>(
+            choiceContext,
             Owner.Creature,
             DynamicVars["BufferProtocolPower"].BaseValue,
             Owner.Creature,

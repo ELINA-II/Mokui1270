@@ -23,7 +23,7 @@ public class IronGuardPower : CustomPowerModel
         new PowerVar<IntangiblePower>(1m),
     ];
 
-    public override async Task BeforeSideTurnStart(PlayerChoiceContext choiceContext, CombatSide side, CombatState combatState)
+    public override async Task BeforeSideTurnStart(PlayerChoiceContext choiceContext, CombatSide side, IReadOnlyList<Creature> participants, ICombatState combatState)
 	{
 		if (side != Owner.Side)
 		{
@@ -37,6 +37,7 @@ public class IronGuardPower : CustomPowerModel
         foreach (var player in allPlayers)
         {
             await PowerCmd.Apply<IntangiblePower>(
+            choiceContext,   
             player,
             1,
             Owner,

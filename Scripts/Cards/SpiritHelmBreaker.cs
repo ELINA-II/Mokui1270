@@ -1,15 +1,18 @@
+using BaseLib.Extensions;
 using BaseLib.Utils;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
+using MegaCrit.Sts2.Core.Entities.Creatures;
 using MegaCrit.Sts2.Core.Entities.Players;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
-using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using MegaCrit.Sts2.Core.Models;
-using MegaCrit.Sts2.Core.Models.Powers;
 using MegaCrit.Sts2.Core.ValueProps;
 using Mokui1270.Scripts.Patchs;
+using StrengthPower = MegaCrit.Sts2.Core.Models.Powers.StrengthPower;
+using IHoverTip = MegaCrit.Sts2.Core.HoverTips.IHoverTip;
+using HoverTipFactory = MegaCrit.Sts2.Core.HoverTips.HoverTipFactory;
 
 namespace Mokui1270.Scripts.Cards;
 [Pool(typeof(Mokui1270CardPool))]
@@ -44,7 +47,7 @@ public class SpiritHelmBreaker : AbstractMokui1270Card
     {await DamageCmd.Attack(DynamicVars.Damage.BaseValue).WithHitCount(5).FromCard(this)
 			.TargetingAllOpponents(CombatState!)
 			.Execute(choiceContext);
-        await PowerCmd.Apply<StrengthPower>(Owner.Creature,DynamicVars["StrengthPower"].BaseValue,Owner.Creature, this);
+        await PowerCmd.Apply<StrengthPower>(choiceContext,Owner.Creature,DynamicVars["StrengthPower"].BaseValue,Owner.Creature, this);
     }
 
     protected override void OnUpgrade()
@@ -64,7 +67,7 @@ public class SpiritHelmBreaker : AbstractMokui1270Card
         {
             SpiritHelmBreaker.Add(combatState.CreateCard<SpiritHelmBreaker>(owner));
         }
-        await CardPileCmd.AddGeneratedCardsToCombat(SpiritHelmBreaker, PileType.Hand, addedByPlayer: true);
+        await CardPileCmd.AddGeneratedCardsToCombat(SpiritHelmBreaker, PileType.Hand, owner, default);
         return SpiritHelmBreaker;
     }
 

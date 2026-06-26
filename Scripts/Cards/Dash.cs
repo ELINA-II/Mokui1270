@@ -38,7 +38,7 @@ public class Dash : AbstractMokui1270Card
     
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
-        await PowerCmd.Apply<DashPower>(Owner.Creature,DynamicVars["DashPower"].BaseValue, Owner.Creature, this);
+        await PowerCmd.Apply<DashPower>(choiceContext,Owner.Creature,DynamicVars["DashPower"].BaseValue, Owner.Creature, this);
     }
     
     protected override void OnUpgrade()

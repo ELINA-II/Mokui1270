@@ -17,7 +17,7 @@ public class WatchSelfDestructPower : CustomPowerModel
     public override string? CustomPackedIconPath => "res://Mokui1270/images/powers/WatchSelfDestructPower.png";
     public override string? CustomBigIconPath => "res://Mokui1270/images/powers/WatchSelfDestructPower.png";
 
-    public override async Task AfterTurnEnd(PlayerChoiceContext choiceContext, CombatSide side)
+    public override async Task AfterSideTurnEnd(PlayerChoiceContext choiceContext, CombatSide side, IEnumerable<Creature> participants)
 	{
 		if (side == Owner.Side && !Owner.IsDead)
 		{

@@ -24,6 +24,7 @@ public class EnhancedSelfDestruct : AbstractMokui1270Card
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
         await PowerCmd.Apply<EnhancedSelfDestructPower>(
+            choiceContext,
             Owner.Creature,
             DynamicVars["EnhancedSelfDestructPower"].BaseValue,
             Owner.Creature,

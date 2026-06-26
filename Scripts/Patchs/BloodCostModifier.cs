@@ -32,14 +32,14 @@ namespace Mokui1270.BloodCostSystem
             return (bool)prop.GetValue(card)!;
         }
 
-        private static bool HasUsedThisCombat(CardModel card, CombatState combatState)
+        private static bool HasUsedThisCombat(CardModel card, ICombatState combatState)
         {
             var field = card.GetType().GetField("_usedInCombat", BindingFlags.NonPublic | BindingFlags.Instance);
             if (field == null) return false;
             return field.GetValue(card) == combatState;
         }
 
-        private static void MarkUsed(CardModel card, CombatState combatState)
+        private static void MarkUsed(CardModel card, ICombatState combatState)
         {
             var field = card.GetType().GetField("_usedInCombat", BindingFlags.NonPublic | BindingFlags.Instance);
             if (field != null)
@@ -140,7 +140,7 @@ namespace Mokui1270.BloodCostSystem
             }
              _ = ApplyBloodDamage(player, player.Creature, __instance, damageAmount, combatState);
 }
-private static async Task ApplyBloodDamage(Player player, Creature creature, CardModel card, int damageAmount, CombatState combatState)
+private static async Task ApplyBloodDamage(Player player, Creature creature, CardModel card, int damageAmount, ICombatState combatState)
 {
     try
     {

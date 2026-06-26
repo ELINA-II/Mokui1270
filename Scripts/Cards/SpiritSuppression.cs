@@ -35,8 +35,8 @@ public class SpiritSuppression : AbstractMokui1270Card
             .FromCard(this)
             .Targeting(cardPlay.Target!)
             .Execute(choiceContext);
-            await PowerCmd.Apply<PiercingWailPower>(cardPlay.Target!,DynamicVars["StrengthLoss"].BaseValue,Owner.Creature, this);
-            await PowerCmd.Apply<StrengthPower>(cardPlay.Target!, -1,Owner.Creature, this);
+            await PowerCmd.Apply<PiercingWailPower>(choiceContext,cardPlay.Target!,DynamicVars["StrengthLoss"].BaseValue,Owner.Creature, this);
+            await PowerCmd.Apply<StrengthPower>(choiceContext,cardPlay.Target!, -1,Owner.Creature, this);
     }
 
     protected override void OnUpgrade()

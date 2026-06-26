@@ -52,7 +52,7 @@ public class EMPBlast : AbstractMokui1270Card
             .FromCard(this)
             .TargetingAllOpponents(CombatState!)
             .Execute(choiceContext);
-        await PowerCmd.Apply<WeakPower>(CombatState!.HittableEnemies,DynamicVars.Weak.BaseValue,Owner.Creature, this);
+        await PowerCmd.Apply<WeakPower>(choiceContext,CombatState!.HittableEnemies,DynamicVars.Weak.BaseValue,Owner.Creature, this);
         await CreatureCmd.GainBlock(Owner.Creature,DynamicVars.Damage.PreviewValue*enemyCount,ValueProp.Move | ValueProp.Unpowered,cardPlay);
         await CardPileCmd.Draw(choiceContext,DynamicVars.Cards.BaseValue,Owner);
     }

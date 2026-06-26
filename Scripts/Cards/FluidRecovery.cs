@@ -35,6 +35,7 @@ public class FluidRecovery : AbstractMokui1270Card
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {   
         await PowerCmd.Apply<FluidRecoveryPower>(
+            choiceContext,
             Owner.Creature,
             DynamicVars["FluidRecoveryPower"].BaseValue,
             Owner.Creature,

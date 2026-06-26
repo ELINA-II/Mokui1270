@@ -50,11 +50,11 @@ public class BlackwallGateway : AbstractMokui1270Card
             .FromCard(this)
             .Targeting(cardPlay.Target!)
             .Execute(choiceContext))
-            .Results.Any((DamageResult r) => r.WasTargetKilled))
+            .Results.SelectMany(r => r).Any((DamageResult r) => r.WasTargetKilled))
             {
                 await PlayerCmd.GainEnergy(EnergyCost.GetAmountToSpend()*2,Owner);
                 await RAMClass.RecoverRAM(choiceContext,(int)DynamicVars["Ram"].BaseValue*2,Owner);
-                await BlackwallGateway.CreateInHand(Owner,CombatState!);
+                await BlackwallGateway.CreateInHand(Owner,(CombatState)CombatState!);
             }
         await CreatureCmd.GainBlock(Owner.Creature,DynamicVars.Damage.PreviewValue,ValueProp.Move | ValueProp.Move,cardPlay);
         await CardPileCmd.Draw(choiceContext,DynamicVars.Cards.BaseValue,Owner);
@@ -82,7 +82,7 @@ public class BlackwallGateway : AbstractMokui1270Card
         {
             blackgateway.Add(combatState.CreateCard<BlackwallGateway>(owner));
         }
-        await CardPileCmd.AddGeneratedCardsToCombat(blackgateway, PileType.Hand, addedByPlayer: true);
+        await CardPileCmd.AddGeneratedCardsToCombat(blackgateway, PileType.Hand, owner, default);
         return blackgateway;
     }
 }

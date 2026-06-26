@@ -36,7 +36,7 @@ public class RoundslashI : AbstractMokui1270Card
        .FromCard(this)
        .TargetingAllOpponents(CombatState!)
        .Execute(choiceContext);
-       await RoundslashTwo.CreateInHand(Owner,CombatState!);
+       await RoundslashTwo.CreateInHand(Owner,(CombatState)CombatState!);
 	   await Cmd.Wait(0.25f);
     }
 
@@ -57,7 +57,7 @@ public class RoundslashI : AbstractMokui1270Card
         {
             roundslashi.Add(combatState.CreateCard<RoundslashI>(owner));
         }
-        await CardPileCmd.AddGeneratedCardsToCombat(roundslashi, PileType.Hand, addedByPlayer: true);
+        await CardPileCmd.AddGeneratedCardsToCombat(roundslashi, PileType.Hand, owner, default);
         return roundslashi;
     }
 

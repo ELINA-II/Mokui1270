@@ -37,7 +37,7 @@ public class NanomachineRecycleI : AbstractMokui1270Card
         ArgumentNullException.ThrowIfNull(cardPlay.Target, "cardPlay.Target");
 		if ((await DamageCmd.Attack(DynamicVars.Damage.BaseValue).FromCard(this).Targeting(cardPlay.Target)
 			.WithHitFx("vfx/vfx_attack_slash", null, "slash_attack.mp3")
-			.Execute(choiceContext)).Results.Any((DamageResult r) => r.WasTargetKilled))
+			.Execute(choiceContext)).Results.SelectMany(r => r).Any((DamageResult r) => r.WasTargetKilled))
 		{
 			await PlayerCmd.GainEnergy(DynamicVars.Energy.IntValue,Owner);
             await CreatureCmd.GainMaxHp(Owner.Creature,DynamicVars.MaxHp.IntValue);

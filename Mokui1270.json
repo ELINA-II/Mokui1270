@@ -2,11 +2,13 @@
   "id": "Mokui1270",
   "name": "自动人形Mokui_1270",
   "author": "木易",
-  "description": "一百年后,我们的Mokui再次来到了塔底...",
-  "version": "0.1.4",
+  "description": "？？年后,我们的Mokui再次来到了塔底...",
+  "version": "0.1.5",
   "min_game_version": "0.105.0",
   "has_pck": true,
   "has_dll": true,
-  "dependencies": ["BaseLib"],
+  "dependencies": [
+    {"id":"BaseLib","min_version":"3.1.9"}
+  ],
   "affects_gameplay": true
 }

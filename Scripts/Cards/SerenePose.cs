@@ -41,7 +41,7 @@ public class SerenePose : AbstractMokui1270Card
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
         // 1. 添加护盾能力
-        await PowerCmd.Apply<BufferPower>(Owner.Creature, DynamicVars["BufferPower"].BaseValue, Owner.Creature, this);
+        await PowerCmd.Apply<BufferPower>(choiceContext,Owner.Creature, DynamicVars["BufferPower"].BaseValue, Owner.Creature, this);
         
         // 2. 创建选项列表
         var options = new List<CardModel>();
@@ -79,7 +79,7 @@ public class SerenePose : AbstractMokui1270Card
         }
         else if (selected is CondenseForm)
         {
-            await ExecuteVigor();
+            await ExecuteVigor(choiceContext);
         }
     }
     
@@ -95,10 +95,10 @@ public class SerenePose : AbstractMokui1270Card
     /// <summary>
     /// 执行活力效果
     /// </summary>
-    private async Task ExecuteVigor()
+    private async Task ExecuteVigor(PlayerChoiceContext choiceContext)
     {
         // 给玩家增加活力（根据你的设计）
-        await PowerCmd.Apply<VigorPower>(Owner.Creature,10, Owner.Creature, this);
+        await PowerCmd.Apply<VigorPower>(choiceContext,Owner.Creature,10, Owner.Creature, this);
     }
 
     protected override void OnUpgrade()

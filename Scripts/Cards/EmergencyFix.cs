@@ -35,7 +35,7 @@ public class EmergencyFix : AbstractMokui1270Card
         bool isLowHealth = IsHealthBelowThreshold();
         if (isLowHealth)
         {
-            await PowerCmd.Apply<RegenPower>(Owner.Creature,DynamicVars["RegenPower"].BaseValue,Owner.Creature, this);
+            await PowerCmd.Apply<RegenPower>(choiceContext,Owner.Creature,DynamicVars["RegenPower"].BaseValue,Owner.Creature, this);
         }
     }
     

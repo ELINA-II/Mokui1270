@@ -40,6 +40,7 @@ public class NanomachineRecycleII : AbstractMokui1270Card
         foreach (var player in allPlayers)
         {
             await PowerCmd.Apply<SneakyPower>(
+            choiceContext,
             player,
             DynamicVars["SneakyPower"].BaseValue,
             Owner.Creature,

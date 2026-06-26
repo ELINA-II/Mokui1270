@@ -41,8 +41,8 @@ public class SwarmAttack : AbstractMokui1270Card
        .FromCard(this)
        .TargetingAllOpponents(CombatState!)
        .Execute(choiceContext);
-       await PowerCmd.Apply<VulnerablePower>(CombatState!.HittableEnemies,DynamicVars.Vulnerable.BaseValue,Owner.Creature, this);
-       await PowerCmd.Apply<WeakPower>(CombatState!.HittableEnemies,DynamicVars.Weak.BaseValue,Owner.Creature, this);
+       await PowerCmd.Apply<VulnerablePower>(choiceContext,CombatState!.HittableEnemies,DynamicVars.Vulnerable.BaseValue,Owner.Creature, this);
+       await PowerCmd.Apply<WeakPower>(choiceContext,CombatState!.HittableEnemies,DynamicVars.Weak.BaseValue,Owner.Creature, this);
     }
 
     protected override void OnUpgrade()

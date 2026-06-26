@@ -2,6 +2,7 @@ using BaseLib.Utils;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.Entities.Creatures;
+using MegaCrit.Sts2.Core.Entities.Players;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
@@ -9,6 +10,7 @@ using MegaCrit.Sts2.Core.Models.Powers;
 using MegaCrit.Sts2.Core.ValueProps;
 using Mokui1270.Scripts.Patchs;
 using Mokui1270.Scripts.Powers;
+using Mokui1270.Scripts.RAM;
 
 namespace Mokui1270.Scripts.Cards;
 [Pool(typeof(Mokui1270CardPool))]
@@ -22,6 +24,8 @@ public class WatchSelfDestruct : AbstractMokui1270Card
 
     private bool isHardtokill = false;
     private bool isHardenedShell = false;
+
+    private bool couldPlay = false;
     protected override IEnumerable<DynamicVar> CanonicalVars => [
         new CardsVar(1),
         ];
@@ -43,7 +47,18 @@ public class WatchSelfDestruct : AbstractMokui1270Card
     }
     protected override async Task OnPlay(PlayerChoiceContext choiceContext,CardPlay cardPlay)
     {
-        await PowerCmd.Apply<WatchSelfDestructPower>(Owner.Creature,3,Owner.Creature, this);
+        Player player = Owner;
+        if (RAMClass.GetCurrentRAM(player) != 0)
+        {
+        couldPlay = true;   
+        }
+        if (!couldPlay)
+        {
+            await CardPileCmd.Draw(choiceContext,DynamicVars.Cards.BaseValue,Owner);
+            await PlayerCmd.GainEnergy(2,Owner);
+        }else{
+        await RAMClass.ConsumeRAM(choiceContext,RAMClass.GetCurrentRAM(player),player);
+        await PowerCmd.Apply<WatchSelfDestructPower>(choiceContext,Owner.Creature,3,Owner.Creature, this);
 		foreach (Creature hittableEnemy in CombatState!.HittableEnemies)
 		{
             isHardenedShell = false;
@@ -69,15 +84,17 @@ public class WatchSelfDestruct : AbstractMokui1270Card
         {
             if (isHardtokill)
             {
-                await PowerCmd.Apply<HardToKillPower>(hittableEnemy,1,Owner.Creature, this);
+                await PowerCmd.Apply<HardToKillPower>(choiceContext,hittableEnemy,1,Owner.Creature, this);
             }
             if (isHardenedShell)
             {
-                await PowerCmd.Apply<HardenedShellPower>(hittableEnemy,1,Owner.Creature, this);
+                await PowerCmd.Apply<HardenedShellPower>(choiceContext,hittableEnemy,1,Owner.Creature, this);
             }
         }
 		}
         await CardPileCmd.Draw(choiceContext,DynamicVars.Cards.BaseValue,Owner);
+        couldPlay = false;
+        }
     }
 
     protected override void OnUpgrade()

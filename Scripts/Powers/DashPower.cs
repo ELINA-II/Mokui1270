@@ -13,6 +13,8 @@ namespace Mokui1270.Scripts.Powers;
 public class DashPower : CustomPowerModel
 {
     private Rng _rng = new Rng();
+
+    private int roll = 0;
     
     public override PowerType Type => PowerType.Buff;
     public override PowerStackType StackType => PowerStackType.Single;  // 不可叠加
@@ -31,7 +33,7 @@ public class DashPower : CustomPowerModel
         if (target != Owner) return 1m;
         
         // 随机
-        int roll = _rng.NextInt(0, 100);  // 0-99
+        roll = _rng.NextInt(0, 100);  // 0-99
         
         if (roll < 50)
         {
@@ -48,11 +50,11 @@ public class DashPower : CustomPowerModel
     /// <summary>
     /// 回合结束时移除该能力（本回合有效）
     /// </summary>
-    public override async Task AfterTurnEnd(PlayerChoiceContext choiceContext, CombatSide side)
-    {
-        if (side == CombatSide.Enemy)
-        {
-            await PowerCmd.Remove(this);
-        }
-    }
+    public override async Task AfterSideTurnEnd(PlayerChoiceContext choiceContext, CombatSide side, IEnumerable<Creature> participants)
+	{
+		if (side == CombatSide.Enemy)
+		{
+			await PowerCmd.Remove(this);
+		}
+	}
 }

@@ -57,13 +57,13 @@ public class MassiveUAVBuilder : AbstractMokui1270Card
         // 5. 执行选中的效果
         if (selected is AttackUavChoice)
         {
-            await PowerCmd.Apply<MassiveUAVBuilderAttackPower>(Owner.Creature,1,Owner.Creature, this);
+            await PowerCmd.Apply<MassiveUAVBuilderAttackPower>(choiceContext,Owner.Creature,1,Owner.Creature, this);
             }
         else if (selected is DefendUavChoice)
         {
-            await PowerCmd.Apply<MassiveUAVBuilderDefendPower>(Owner.Creature,1,Owner.Creature, this);
+            await PowerCmd.Apply<MassiveUAVBuilderDefendPower>(choiceContext,Owner.Creature,1,Owner.Creature, this);
         }else if(selected is HealUavChoice){
-            await PowerCmd.Apply<MassiveUAVBuilderHealPower>(Owner.Creature,1,Owner.Creature, this);
+            await PowerCmd.Apply<MassiveUAVBuilderHealPower>(choiceContext,Owner.Creature,1,Owner.Creature, this);
         }
     }
 

@@ -35,7 +35,7 @@ public class ArcWave : AbstractMokui1270Card
        .WithHitCount(3)
        .TargetingAllOpponents(CombatState!)
        .Execute(choiceContext);
-       await PowerCmd.Apply<VulnerablePower>(CombatState!.HittableEnemies,DynamicVars.Vulnerable.BaseValue,Owner.Creature, this);
+       await PowerCmd.Apply<VulnerablePower>(choiceContext,CombatState!.HittableEnemies,DynamicVars.Vulnerable.BaseValue,Owner.Creature, this);
     }
 
     protected override void OnUpgrade()

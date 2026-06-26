@@ -31,8 +31,8 @@ public class FactoryReset : AbstractMokui1270Card
     {     
         await PlayerCmd.GainEnergy(DynamicVars.Energy.BaseValue,Owner);
 		OrbCmd.RemoveSlots(Owner,DynamicVars["OrbSlots"].IntValue);
-		await PowerCmd.Apply<StrengthPower>(Owner.Creature,DynamicVars.Strength.BaseValue,Owner.Creature, this);
-		await PowerCmd.Apply<FocusPower>(Owner.Creature,DynamicVars["FocusPower"].BaseValue,Owner.Creature, this);
+		await PowerCmd.Apply<StrengthPower>(choiceContext,Owner.Creature,DynamicVars.Strength.BaseValue,Owner.Creature, this);
+		await PowerCmd.Apply<FocusPower>(choiceContext,Owner.Creature,DynamicVars["FocusPower"].BaseValue,Owner.Creature, this);
     }
     
     protected override void OnUpgrade()

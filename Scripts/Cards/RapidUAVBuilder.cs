@@ -85,19 +85,19 @@ public class RapidUAVBuilder : AbstractMokui1270Card
         EnergyCost.UpgradeBy(-1);
     }
 
-    public static async Task<CardModel?> CreateInHand(Player owner, CombatState combatState)
+    public static async Task<CardModel?> CreateInHand(Player owner, ICombatState combatState)
     {
         return (await CreateInHand(owner, 1, combatState)).FirstOrDefault();
     }
     
-    public static async Task<IEnumerable<CardModel>> CreateInHand(Player owner, int count, CombatState combatState)
+    public static async Task<IEnumerable<CardModel>> CreateInHand(Player owner, int count, ICombatState combatState)
     {
         var rapidbuild = new List<CardModel>();
         for (int i = 0; i < count; i++)
         {
             rapidbuild.Add(combatState.CreateCard<RapidUAVBuilder>(owner));
         }
-        await CardPileCmd.AddGeneratedCardsToCombat(rapidbuild, PileType.Hand, addedByPlayer: true);
+        await CardPileCmd.AddGeneratedCardsToCombat(rapidbuild, PileType.Hand,owner);
         return rapidbuild;
     }
 }

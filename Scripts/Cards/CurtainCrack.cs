@@ -44,7 +44,7 @@ public class CurtainCrack : AbstractMokui1270Card
 		{
 			await PowerCmd.Remove<ArtifactPower>(cardPlay.Target);
 		}
-        await PowerCmd.Apply<PiercingWailPower>(cardPlay.Target!,DynamicVars["StrengthLoss"].BaseValue,Owner.Creature, this);
+        await PowerCmd.Apply<PiercingWailPower>(choiceContext,cardPlay.Target!,DynamicVars["StrengthLoss"].BaseValue,Owner.Creature, this);
     }
 
     protected override void OnUpgrade()

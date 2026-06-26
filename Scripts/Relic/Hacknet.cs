@@ -3,6 +3,7 @@ using BaseLib.Abstracts;
 using BaseLib.Utils;
 using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Commands;
+using MegaCrit.Sts2.Core.Entities.Creatures;
 using MegaCrit.Sts2.Core.Entities.Players;
 using MegaCrit.Sts2.Core.Entities.Relics;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
@@ -27,12 +28,11 @@ public class Hacknet : CustomRelicModel
         await RAMClass.RecoverRAM(choiceContext,1, player);
     }
 
-    public override async Task BeforeSideTurnStart(PlayerChoiceContext choiceContext, CombatSide side, CombatState combatState)
-	{
+    public override async Task BeforeSideTurnStart(PlayerChoiceContext choiceContext, CombatSide side, IReadOnlyList<Creature> participants, ICombatState combatState){
 		if (side == Owner.Creature.Side && combatState.RoundNumber <= 1)
 		{
 			Flash();
-			await PowerCmd.Apply<VulnerablePower>(combatState.HittableEnemies,1,Owner.Creature, null);
+			await PowerCmd.Apply<VulnerablePower>(choiceContext,combatState.HittableEnemies,1,Owner.Creature, null);
 		}
 	}
 

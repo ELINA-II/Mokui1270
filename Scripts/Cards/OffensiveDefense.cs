@@ -52,8 +52,8 @@ public class OffensiveDefense : AbstractMokui1270Card
         }else{
         StrengthNum = Owner.Creature.Block/8;
         await CreatureCmd.LoseBlock(Owner.Creature, Owner.Creature.Block);
-        await PowerCmd.Apply<StrengthPower>(Owner.Creature,StrengthNum,Owner.Creature, this);
-        await PowerCmd.Apply<VulnerablePower>(Owner.Creature,DynamicVars.Vulnerable.BaseValue,Owner.Creature, this);
+        await PowerCmd.Apply<StrengthPower>(choiceContext,Owner.Creature,StrengthNum,Owner.Creature, this);
+        await PowerCmd.Apply<VulnerablePower>(choiceContext,Owner.Creature,DynamicVars.Vulnerable.BaseValue,Owner.Creature, this);
         await CardPileCmd.Draw(choiceContext,DynamicVars.Cards.BaseValue,Owner);
         }
     }

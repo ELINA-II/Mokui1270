@@ -38,7 +38,7 @@ public class Bite : AbstractMokui1270Card
             .FromCard(this)
             .Targeting(cardPlay.Target!)
             .Execute(choiceContext);
-        await PowerCmd.Apply<PoisonPower>(cardPlay.Target!,DynamicVars.Poison.BaseValue,Owner.Creature, this);
+        await PowerCmd.Apply<PoisonPower>(choiceContext,cardPlay.Target!,DynamicVars.Poison.BaseValue,Owner.Creature, this);
 
     }
 

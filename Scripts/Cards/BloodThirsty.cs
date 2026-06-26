@@ -25,6 +25,7 @@ public class BloodThirsty : AbstractMokui1270Card
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
         await PowerCmd.Apply<BloodThirstyPower>(
+            choiceContext,
             Owner.Creature,
             DynamicVars["BloodThirstyPower"].BaseValue,
             Owner.Creature,

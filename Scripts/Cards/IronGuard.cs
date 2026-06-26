@@ -37,7 +37,7 @@ public class IronGuard : AbstractMokui1270Card
     {
         teammateCount = Owner.Creature.CombatState!.Players
     .Count(p => p.Creature != null && p.Creature.IsAlive && p.Creature.Side == Owner.Creature.Side);
-        await PowerCmd.Apply<DashPower>(Owner.Creature,teammateCount, Owner.Creature, this);
+        await PowerCmd.Apply<DashPower>(choiceContext,Owner.Creature,teammateCount, Owner.Creature, this);
     }
     
     protected override void OnUpgrade()

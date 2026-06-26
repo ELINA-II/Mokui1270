@@ -14,10 +14,8 @@ namespace Mokui1270.Scripts.Cards;
 [Pool(typeof(Mokui1270CardPool))]
 public class UtilityKnife : AbstractMokui1270Card
 {
-    private const string HEAL_BONUS_KEY = "HealBonus";
-
     public override IEnumerable<CardKeyword> CanonicalKeywords => [
-        MyKeyWords.BloodAttack
+        MyKeyWords.Nanomachine
     ];
     
     // 使用 CalculatedVar 实现动态伤害显示
@@ -42,7 +40,7 @@ public class UtilityKnife : AbstractMokui1270Card
     
     public UtilityKnife() : base(1, CardType.Attack, CardRarity.Common, TargetType.AnyEnemy, true)
     {
-        isBlood = true;
+        isNanomachine = true;
     }
     
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)

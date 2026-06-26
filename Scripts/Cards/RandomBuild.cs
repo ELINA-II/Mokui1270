@@ -87,7 +87,7 @@ public class RandomBuild : AbstractMokui1270Card
         {
             randombuild.Add(combatState.CreateCard<RandomBuild>(owner));
         }
-        await CardPileCmd.AddGeneratedCardsToCombat(randombuild, PileType.Hand, addedByPlayer: true);
+        await CardPileCmd.AddGeneratedCardsToCombat(randombuild, PileType.Hand, owner, default);
         return randombuild;
     }
 }

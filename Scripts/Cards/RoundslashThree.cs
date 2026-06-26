@@ -48,16 +48,16 @@ public class RoundslashThree : AbstractMokui1270Card
        .TargetingAllOpponents(CombatState!)
        .Execute(choiceContext);
        await PlayerCmd.GainEnergy(DynamicVars.Energy.BaseValue,Owner);
-       await PowerCmd.Apply<StrengthPower>(Owner.Creature,DynamicVars["StrengthPower"].BaseValue,Owner.Creature, this);
+       await PowerCmd.Apply<StrengthPower>(choiceContext,Owner.Creature,DynamicVars["StrengthPower"].BaseValue,Owner.Creature, this);
         IEnumerable<RoundslashI> enumerable = RoundslashI.Create(
         Owner,                    // 所有者
         DynamicVars.Cards.IntValue, // 数量（1）
-        CombatState!               // 战斗状态
+        (CombatState)CombatState!               // 战斗状态
         );
         CardCmd.PreviewCardPileAdd(
-        await CardPileCmd.AddGeneratedCardsToCombat(enumerable, PileType.Draw, addedByPlayer: true)
+        await CardPileCmd.AddGeneratedCardsToCombat(enumerable, PileType.Draw, Owner, default)
         );
-        await SpiritHelmBreaker.CreateInHand(Owner,CombatState!);
+        await SpiritHelmBreaker.CreateInHand(Owner,(CombatState)CombatState!);
 	    await Cmd.Wait(0.25f);
 
     }
@@ -79,7 +79,7 @@ public class RoundslashThree : AbstractMokui1270Card
         {
             roundslashiii.Add(combatState.CreateCard<RoundslashThree>(owner));
         }
-        await CardPileCmd.AddGeneratedCardsToCombat(roundslashiii, PileType.Hand, addedByPlayer: true);
+        await CardPileCmd.AddGeneratedCardsToCombat(roundslashiii, PileType.Hand, owner, default);
         return roundslashiii;
     }
 }

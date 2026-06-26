@@ -27,8 +27,8 @@ public class NuclearPath : AbstractMokui1270Card
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext,CardPlay cardPlay)
     {
-        await PowerCmd.Apply<StrengthPower>(Owner.Creature,DynamicVars["StrengthPower"].BaseValue, Owner.Creature, this);
-        await PowerCmd.Apply<VulnerablePower>(Owner.Creature,DynamicVars["VulnerablePower"].BaseValue, Owner.Creature, this);
+        await PowerCmd.Apply<StrengthPower>(choiceContext,Owner.Creature,DynamicVars["StrengthPower"].BaseValue, Owner.Creature, this);
+        await PowerCmd.Apply<VulnerablePower>(choiceContext,Owner.Creature,DynamicVars["VulnerablePower"].BaseValue, Owner.Creature, this);
     }
 
     protected override void OnUpgrade()

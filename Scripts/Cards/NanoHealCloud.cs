@@ -40,7 +40,7 @@ public class NanoHealCloud : AbstractMokui1270Card
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext,CardPlay cardPlay)
     {
-        await PowerCmd.Apply<RegenPower>(cardPlay.Target!,DynamicVars["RegenPower"].BaseValue,Owner.Creature, this);
+        await PowerCmd.Apply<RegenPower>(choiceContext,cardPlay.Target!,DynamicVars["RegenPower"].BaseValue,Owner.Creature, this);
         await PlayerCmd.GainEnergy(DynamicVars.Energy.BaseValue,Owner);
     }
 

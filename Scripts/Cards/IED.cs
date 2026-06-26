@@ -39,7 +39,7 @@ public class IED : AbstractMokui1270Card
             .FromCard(this)
             .Targeting(cardPlay.Target!)
             .Execute(choiceContext);
-        await PowerCmd.Apply<VulnerablePower>(cardPlay.Target!,DynamicVars.Vulnerable.BaseValue,Owner.Creature, this);
+        await PowerCmd.Apply<VulnerablePower>(choiceContext,cardPlay.Target!,DynamicVars.Vulnerable.BaseValue,Owner.Creature, this);
 
     }
 

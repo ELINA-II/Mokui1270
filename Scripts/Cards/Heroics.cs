@@ -30,6 +30,7 @@ public class Heroics : AbstractMokui1270Card
     {   
         // 添加免死能力
         await PowerCmd.Apply<HeroicsReadyPower>(
+            choiceContext,
             Owner.Creature,
             DynamicVars["HeroicsReadyPower"].BaseValue,
             Owner.Creature,

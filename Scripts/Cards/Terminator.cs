@@ -35,7 +35,7 @@ public class Terminator : AbstractMokui1270Card
     {
        bloodcost = Owner.Creature.CurrentHp/2;
        await CreatureCmd.Damage(choiceContext, Owner.Creature,bloodcost, ValueProp.Unblockable | ValueProp.Unpowered | ValueProp.Move, this);
-       await PowerCmd.Apply<TerminatorPower>(Owner.Creature,DynamicVars["TerminatorPower"].BaseValue,Owner.Creature, this);
+       await PowerCmd.Apply<TerminatorPower>(choiceContext,Owner.Creature,DynamicVars["TerminatorPower"].BaseValue,Owner.Creature, this);
     }
 
     protected override void OnUpgrade()

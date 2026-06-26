@@ -35,7 +35,7 @@ public class Salvage : AbstractMokui1270Card
 		{
 			await CardCmd.Exhaust(choiceContext, cardModel);
             if(cardModel.Type == CardType.Skill){
-            await PowerCmd.Apply<FocusPower>(Owner.Creature,DynamicVars["FocusPower"].BaseValue,Owner.Creature, this);
+            await PowerCmd.Apply<FocusPower>(choiceContext,Owner.Creature,DynamicVars["FocusPower"].BaseValue,Owner.Creature, this);
             await PlayerCmd.GainEnergy(1, Owner);
             }
 		}

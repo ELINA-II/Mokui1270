@@ -40,9 +40,9 @@ public class RoundslashTwo : AbstractMokui1270Card
        .FromCard(this)
        .TargetingAllOpponents(CombatState!)
        .Execute(choiceContext);
-       await PowerCmd.Apply<VulnerablePower>(CombatState!.HittableEnemies,DynamicVars.Vulnerable.BaseValue,Owner.Creature, this);
+       await PowerCmd.Apply<VulnerablePower>(choiceContext,CombatState!.HittableEnemies,DynamicVars.Vulnerable.BaseValue,Owner.Creature, this);
        await PlayerCmd.GainEnergy(DynamicVars.Energy.BaseValue,Owner);
-       await RoundslashThree.CreateInHand(Owner,CombatState!);
+       await RoundslashThree.CreateInHand(Owner,(CombatState)CombatState!);
 	   await Cmd.Wait(0.25f);
     }
 
@@ -63,7 +63,7 @@ public class RoundslashTwo : AbstractMokui1270Card
         {
             roundslashii.Add(combatState.CreateCard<RoundslashTwo>(owner));
         }
-        await CardPileCmd.AddGeneratedCardsToCombat(roundslashii, PileType.Hand, addedByPlayer: true);
+        await CardPileCmd.AddGeneratedCardsToCombat(roundslashii, PileType.Hand, owner, default);
         return roundslashii;
     }
 }

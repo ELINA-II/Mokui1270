@@ -86,7 +86,7 @@ namespace Mokui1270.Scripts.Powers
             await PlayerCmd.GainEnergy(3,player);
         
             // 增加临时力量
-            await PowerCmd.Apply<SetupStrikePower>(Owner,3,Owner, null);
+            await PowerCmd.Apply<SetupStrikePower>(choiceContext,Owner,3,Owner, null);
             
             // 减少剩余回合计数（层数会减少）
             SetAmount(Amount - 1);

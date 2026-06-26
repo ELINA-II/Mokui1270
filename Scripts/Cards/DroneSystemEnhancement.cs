@@ -52,7 +52,7 @@ public class DroneSystemEnhancement : AbstractMokui1270Card
         // 5. 执行选中的效果
         if (selected is Focus)
         {
-            await PowerCmd.Apply<FocusPower>(Owner.Creature,1,Owner.Creature, this);
+            await PowerCmd.Apply<FocusPower>(choiceContext,Owner.Creature,1,Owner.Creature, this);
         }
         else if (selected is Slots)
         {
