@@ -1,4 +1,6 @@
 using BaseLib.Utils;
+using MegaCrit.Sts2.Core.Combat;
+using MegaCrit.Sts2.Core.Combat.History.Entries;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.Entities.Creatures;
@@ -19,8 +21,12 @@ public class Epinephrine : AbstractMokui1270Card
         new CalculationBaseVar(5m),           // 基础伤害：5
         new ExtraDamageVar(1m),               // 每受到一次伤害增加1
         new CalculatedDamageVar(ValueProp.Move)
-        .WithMultiplier((CardModel card, Creature? _) => DamageTracker.GetDamageCount(card.Owner)
-        )
+         .WithMultiplier((CardModel card, Creature? _) => 
+                // ✅ 使用 CombatHistory 查询本场战斗受到的伤害次数
+                CombatManager.Instance.History.Entries
+                    .OfType<DamageReceivedEntry>()
+                    .Count(e => e.Receiver == card.Owner.Creature && e.Result.UnblockedDamage > 0)
+            )
     };
 
     public override IEnumerable<CardKeyword> CanonicalKeywords => [

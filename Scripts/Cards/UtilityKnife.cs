@@ -1,12 +1,12 @@
 using BaseLib.Utils;
+using MegaCrit.Sts2.Core.Combat;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.Entities.Creatures;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
-using MegaCrit.Sts2.Core.ValueProps;
-using Mokui_1270.Patchs;
 using MegaCrit.Sts2.Core.Models;
+using MegaCrit.Sts2.Core.ValueProps;
 using Mokui1270.Scripts.Patchs;
 
 namespace Mokui1270.Scripts.Cards;
@@ -23,11 +23,16 @@ public class UtilityKnife : AbstractMokui1270Card
         new CalculationBaseVar(9m),
         new ExtraDamageVar(1m),
         new CalculatedDamageVar(ValueProp.Move)
-            .WithMultiplier((CardModel card, Creature? _) => 
-            HealTracker.GetHealCount(card.Owner)  // 乘数 = 治疗次数
-        )
-    ];
-    
+            .WithMultiplier((CardModel card, Creature? _) =>{
+            var history = CombatManager.Instance.History;
+            if (history == null) return 1;
+                // 获取本场战斗中该玩家的治疗次数
+                return history.Entries
+                .OfType<HealthRestoredEntry>()
+                .Count(e => e.Receiver == card.Owner.Creature);
+}
+)
+    ]; 
     // 金边高亮：满血时高亮
     protected override bool ShouldGlowGoldInternal
     {

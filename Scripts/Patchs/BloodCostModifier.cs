@@ -9,8 +9,15 @@ using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.ValueProps;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.Context;
-using MegaCrit.Sts2.Core.Entities.Multiplayer;
 using MegaCrit.Sts2.Core.Entities.Creatures;
+using MegaCrit.Sts2.Core.Combat.History;
+using Mokui1270.Scripts.Patchs;
+using MegaCrit.Sts2.Core.Logging;
+using Mokui1270.Scripts.Patches;
+using MegaCrit.Sts2.Core.Entities.Multiplayer;
+using MegaCrit.Sts2.Core.Hooks;
+
+#pragma warning disable CS8604, CS0649
 
 namespace Mokui1270.BloodCostSystem
 {
@@ -21,8 +28,16 @@ namespace Mokui1270.BloodCostSystem
         {
             public int Value;
         }
-        
+
         private static readonly ConditionalWeakTable<CardModel, BorrowedEnergyData> _borrowedEnergy = new();
+        private static readonly Logger _logger = new Logger("BloodCost", LogType.GameSync);
+
+        private static CombatHistory? GetHistory() => CombatManager.Instance?.History;
+
+        private static ICombatState? GetCombatState(CardModel card)
+        {
+            return card.Owner?.Creature?.CombatState;
+        }
 
         private static bool IsBloodCard(CardModel card)
         {
@@ -34,33 +49,42 @@ namespace Mokui1270.BloodCostSystem
 
         private static bool HasUsedThisCombat(CardModel card, ICombatState combatState)
         {
-            var field = card.GetType().GetField("_usedInCombat", BindingFlags.NonPublic | BindingFlags.Instance);
-            if (field == null) return false;
-            return field.GetValue(card) == combatState;
+            var history = GetHistory();
+            if (history == null) return false;
+
+            return history.Entries
+                .OfType<BloodCostEntry>()
+                .Any(e => e.Card == card && e.Phase == "Complete" && e.HappenedThisTurn(combatState));
         }
 
-        private static void MarkUsed(CardModel card, ICombatState combatState)
+        private static bool HasBorrowedThisTurn(CardModel card, ICombatState combatState)
         {
-            var field = card.GetType().GetField("_usedInCombat", BindingFlags.NonPublic | BindingFlags.Instance);
-            if (field != null)
-            {
-                field.SetValue(card, combatState);
-            }
+            var history = GetHistory();
+            if (history == null) return false;
+
+            return history.Entries
+                .OfType<BloodCostEntry>()
+                .Any(e => e.Card == card && e.Phase == "Borrow" && e.HappenedThisTurn(combatState));
         }
 
-        /// <summary>
-        /// 欺骗能量检查，让血系卡牌在能量不足时仍然被认为可玩
-        /// </summary>
+        // ==================== Harmony Patches ====================
+
         [HarmonyPrefix]
         [HarmonyPatch(typeof(PlayerCombatState), "HasEnoughResourcesFor")]
-        public static bool HasEnoughResourcesForPrefix(PlayerCombatState __instance, CardModel card, ref UnplayableReason reason, ref bool __result)
+        public static bool HasEnoughResourcesForPrefix(
+            PlayerCombatState __instance,
+            CardModel card,
+            ref UnplayableReason reason,
+            ref bool __result)
         {
+            _logger.Debug($"=== HasEnoughResourcesForPrefix: {card?.Id?.Entry}, IsBlood: {IsBloodCard(card)}");
+            
             if (!IsBloodCard(card)) return true;
 
             var player = card.Owner;
             if (player?.Creature == null || !player.Creature.IsAlive) return true;
 
-            var combatState = player.Creature.CombatState;
+            var combatState = GetCombatState(card);
             if (combatState == null) return true;
 
             if (HasUsedThisCombat(card, combatState)) return true;
@@ -68,92 +92,202 @@ namespace Mokui1270.BloodCostSystem
             int originalCost = card.EnergyCost.GetWithModifiers(CostModifiers.All);
             int currentEnergy = __instance.Energy;
             int missingEnergy = originalCost - currentEnergy;
+            
+            _logger.Debug($"Energy: {currentEnergy}/{originalCost}, Missing: {missingEnergy}");
 
             if (missingEnergy <= 0) return true;
 
             int hpToLose = missingEnergy * 5;
             if (player.Creature.CurrentHp <= hpToLose) return true;
 
+            if (HasBorrowedThisTurn(card, combatState))
+            {
+                _logger.Debug($"Already borrowed, allowing play");
+                __result = true;
+                reason = UnplayableReason.None;
+                return false;
+            }
+
+            _logger.Debug($"Borrowing {missingEnergy} energy");
             __result = true;
             reason = UnplayableReason.None;
-            
+
             _borrowedEnergy.Remove(card);
             _borrowedEnergy.Add(card, new BorrowedEnergyData { Value = missingEnergy });
-            
+
+            var history = GetHistory();
+            if (history != null)
+            {
+                history.RecordBloodCost(
+                    combatState,
+                    player.Creature,
+                    card,
+                    missingEnergy,
+                    0,
+                    "Borrow"
+                );
+            }
+
             return false;
         }
 
-        /// <summary>
-        /// 临时增加能量，让原方法能够正常扣除
-        /// </summary>
         [HarmonyPrefix]
         [HarmonyPatch(typeof(CardModel), "SpendResources")]
         public static void SpendResourcesPrefix(CardModel __instance)
         {
+            _logger.Debug($"=== SpendResourcesPrefix: {__instance?.Id?.Entry}");
+            
             if (!IsBloodCard(__instance)) return;
 
             var player = __instance.Owner;
             if (player?.Creature == null || !player.Creature.IsAlive) return;
 
-            var combatState = player.Creature.CombatState;
+            var combatState = GetCombatState(__instance);
             if (combatState == null) return;
 
             if (HasUsedThisCombat(__instance, combatState)) return;
 
             if (!_borrowedEnergy.TryGetValue(__instance, out var borrowedData))
+            {
+                // 如果 History 有借用记录，说明是同步过来的，跳过
+                if (HasBorrowedThisTurn(__instance, combatState)) return;
                 return;
-            
+            }
+
             int missingEnergy = borrowedData.Value;
-            player.PlayerCombatState!.GainEnergy(missingEnergy);
+            int currentEnergy = player.PlayerCombatState!.Energy;
+            int originalCost = __instance.EnergyCost.GetWithModifiers(CostModifiers.All);
+
+            if (currentEnergy < originalCost)
+            {
+                _logger.Debug($"Gaining {missingEnergy} energy");
+                player.PlayerCombatState!.GainEnergy(missingEnergy);
+
+                var history = GetHistory();
+                if (history != null)
+                {
+                    history.RecordBloodCost(
+                        combatState,
+                        player.Creature,
+                        __instance,
+                        missingEnergy,
+                        0,
+                        "EnergyGained"
+                    );
+                }
+            }
         }
 
-        /// <summary>
-        /// 使用 Finalizer 在 SpendResources 完成后造成伤害
-        /// </summary>
         [HarmonyFinalizer]
         [HarmonyPatch(typeof(CardModel), "SpendResources")]
         public static void SpendResourcesFinalizer(CardModel __instance, Exception __exception)
         {
-            // 如果原方法出错，跳过
-            if (__exception != null) return;
+            _logger.Debug($"=== SpendResourcesFinalizer: {__instance?.Id?.Entry}, Exception: {__exception?.Message ?? "None"}");
             
+            if (__exception != null) return;
+
             if (!IsBloodCard(__instance)) return;
 
             var player = __instance.Owner;
             if (player?.Creature == null || !player.Creature.IsAlive) return;
 
-            var combatState = player.Creature.CombatState;
+            var combatState = GetCombatState(__instance);
             if (combatState == null) return;
 
-            if (!_borrowedEnergy.TryGetValue(__instance, out var borrowedData))
+            if (HasUsedThisCombat(__instance, combatState))
+            {
+                _borrowedEnergy.Remove(__instance);
                 return;
-            
+            }
+
+            if (!_borrowedEnergy.TryGetValue(__instance, out var borrowedData))
+            {
+                if (HasBorrowedThisTurn(__instance, combatState))
+                {
+                    _logger.Debug($"Has history borrow, marking used");
+                    MarkUsed(__instance, combatState);
+                }
+                return;
+            }
+
             _borrowedEnergy.Remove(__instance);
             int missingEnergy = borrowedData.Value;
-
             int damageAmount = missingEnergy * 5;
+
             if (player.Creature.CurrentHp <= damageAmount) return;
 
-            if (!HasUsedThisCombat(__instance, combatState))
+            _logger.Debug($"Paying {damageAmount} HP as blood cost");
+
+            var history = GetHistory();
+            if (history != null)
             {
-                MarkUsed(__instance, combatState);
+                history.RecordBloodCost(
+                    combatState,
+                    player.Creature,
+                    __instance,
+                    missingEnergy,
+                    damageAmount,
+                    "HealthPaid"
+                );
             }
-             _ = ApplyBloodDamage(player, player.Creature, __instance, damageAmount, combatState);
-}
-private static async Task ApplyBloodDamage(Player player, Creature creature, CardModel card, int damageAmount, ICombatState combatState)
-{
-    try
-    {
-        ulong localPlayerId = LocalContext.NetId ?? player.NetId;
-        var choiceContext = new HookPlayerChoiceContext(card, localPlayerId, combatState, GameActionType.Combat);
-        
-        await CreatureCmd.Damage(choiceContext, creature, damageAmount, 
-            ValueProp.Unblockable | ValueProp.Unpowered | ValueProp.Move, card);
-    }
-    catch
-    {
-        creature.SetCurrentHpInternal(creature.CurrentHp - damageAmount);
-    }
-    }
+
+            _ = ApplyBloodDamage(player, player.Creature, __instance, damageAmount, combatState!);
+            MarkUsed(__instance, combatState);
+        }
+
+        private static void MarkUsed(CardModel card, ICombatState combatState)
+        {
+            var history = GetHistory();
+            if (history == null || combatState == null) return;
+
+            if (HasUsedThisCombat(card, combatState)) return;
+
+            history.RecordBloodCost(
+                combatState,
+                card.Owner.Creature,
+                card,
+                0,
+                0,
+                "Complete"
+            );
+        }
+
+        private static async Task ApplyBloodDamage(
+            Player player,
+            Creature creature,
+            CardModel card,
+            int damageAmount,
+            ICombatState combatState)
+        {
+            try
+            {
+                ulong localPlayerId = LocalContext.NetId ?? player.NetId;
+                var choiceContext = new HookPlayerChoiceContext(
+                    card,
+                    localPlayerId,
+                    combatState,
+                    GameActionType.Combat
+                );
+
+                await CreatureCmd.Damage(
+                    choiceContext,
+                    creature,
+                    damageAmount,
+                    ValueProp.Unblockable | ValueProp.Unpowered | ValueProp.Move,
+                    card
+                );
+            }
+            catch
+            {
+                creature.SetCurrentHpInternal(creature.CurrentHp - damageAmount);
+            }
+        }
+
+        [HarmonyPrefix]
+        [HarmonyPatch(typeof(Hook), nameof(Hook.AfterCombatEnd))]
+        public static void OnAfterCombatEnd()
+        {
+            _borrowedEnergy.Clear();
+        }
     }
 }
