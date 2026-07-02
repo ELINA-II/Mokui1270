@@ -29,7 +29,8 @@ public class GarbageRecycle : AbstractMokui1270Card
     
     protected override IEnumerable<DynamicVar> CanonicalVars => [
         new HealVar(BASE_HEAL),
-        new EnergyVar(1)
+        new EnergyVar(1),
+        new CardsVar(2),
     ];
 
     public override IEnumerable<CardKeyword> CanonicalKeywords => [
@@ -85,11 +86,16 @@ public class GarbageRecycle : AbstractMokui1270Card
                 await PlayerCmd.GainEnergy(energyGain, Owner);
             }
         }
-        
+
         // 6. 回复生命
         if (healAmount > 0)
         {
             await CreatureCmd.Heal(Owner.Creature, healAmount);
+        }
+
+        if(isStatusCard)
+        {
+            await CardPileCmd.Draw(choiceContext, DynamicVars.Cards.BaseValue,Owner);
         }
     }
 
@@ -103,7 +109,7 @@ public class GarbageRecycle : AbstractMokui1270Card
             1
         )
         {
-            Cancelable = true  // 允许取消
+            Cancelable = false  // 不允许取消
         };
         
         var selected = await CardSelectCmd.FromHand(

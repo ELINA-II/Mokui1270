@@ -1,12 +1,10 @@
 using BaseLib.Utils;
-using MegaCrit.Sts2.Core.Combat;
+using MegaCrit.Sts2.Core.CardSelection;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
-using MegaCrit.Sts2.Core.Entities.Players;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Models;
-using Mokui1270.Scripts.Orbs;
 using Mokui1270.Scripts.Patchs;
 
 namespace Mokui1270.Scripts.Cards;
@@ -29,75 +27,60 @@ public class RapidUAVBuilder : AbstractMokui1270Card
     ];
 
     protected override IEnumerable<IHoverTip> ExtraHoverTips => [
-        HoverTipFactory.FromOrb<AttackUav>(),
-        HoverTipFactory.FromOrb<DefendUav>(),
-        HoverTipFactory.FromOrb<HealUav>(),
+        HoverTipFactory.FromCard<Swarm>(),
     ];
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {        
-        // 2. 创建选项列表
-        var options = new List<CardModel>();
-        var cardScope = CardScope ?? Owner.RunState;
+        var selectedCards = await SelectCardsToTransform(choiceContext);
         
-        var attack = cardScope.CreateCard<AttackUavChoice>(Owner);
-        options.Add(attack);
-        var defend = cardScope.CreateCard<DefendUavChoice>(Owner);
-        options.Add(defend);
-        var heal = cardScope.CreateCard<HealUavChoice>(Owner);
-        options.Add(heal);
-        
-        // 4. 弹出选择界面
-        var selected = await CardSelectCmd.FromChooseACardScreen(
-            choiceContext,
-            options,
-            Owner,
-            canSkip: false
-        );
-        
-        // 5. 执行选中的效果
-        if (selected is AttackUavChoice)
+        if (selectedCards == null || selectedCards.Count == 0) return;
+
+        // 2. 检查是否至少有一张可转换的卡牌
+        var transformableCards = selectedCards.Where(c => c.IsTransformable).ToList();
+        if (transformableCards.Count == 0) return;
+
+        // 3. 循环转换每张选中的卡牌
+        foreach (var card in transformableCards)
         {
-            await AttackBuild(choiceContext);
-        }
-        else if (selected is DefendUavChoice)
-        {
-            await DefendBuild(choiceContext);
-        }else if(selected is HealUavChoice){
-            await HealBuild(choiceContext);
+            // 创建蜂群出击卡牌
+            var swarm = CombatState!.CreateCard<Swarm>(Owner);
+            
+            // 如果卡牌已升级，也升级
+            if (IsUpgraded)
+            {
+                CardCmd.Upgrade(swarm);
+            }
+
+            // 转换选中的卡牌为蜂群出击
+            await CardCmd.Transform(card, swarm);
         }
     }
-    private async Task AttackBuild(PlayerChoiceContext choiceContext)
+
+    private async Task<List<CardModel>> SelectCardsToTransform(PlayerChoiceContext choiceContext)
     {
-        await OrbCmd.Channel<AttackUav>(choiceContext,Owner);
+        var prefs = new CardSelectorPrefs(
+            CardSelectorPrefs.TransformSelectionPrompt,
+            -1  // ✅ -1 表示不限数量
+        )
+        {
+            Cancelable = false  // 不允许取消
+        };
+
+        var selected = (await CardSelectCmd.FromHand(
+            prefs: prefs,
+            context: choiceContext,
+            player: Owner,
+            filter: card => card.IsTransformable,  // 只选可转换的
+            source: this
+        )).ToList();
+
+        return selected;
     }
-    private async Task DefendBuild(PlayerChoiceContext choiceContext)
-    {
-        await OrbCmd.Channel<DefendUav>(choiceContext,Owner);
-    }
-    private async Task HealBuild(PlayerChoiceContext choiceContext)
-    {
-        await OrbCmd.Channel<HealUav>(choiceContext,Owner);
-    }
+
 
     protected override void OnUpgrade()
     {
         EnergyCost.UpgradeBy(-1);
-    }
-
-    public static async Task<CardModel?> CreateInHand(Player owner, ICombatState combatState)
-    {
-        return (await CreateInHand(owner, 1, combatState)).FirstOrDefault();
-    }
-    
-    public static async Task<IEnumerable<CardModel>> CreateInHand(Player owner, int count, ICombatState combatState)
-    {
-        var rapidbuild = new List<CardModel>();
-        for (int i = 0; i < count; i++)
-        {
-            rapidbuild.Add(combatState.CreateCard<RapidUAVBuilder>(owner));
-        }
-        await CardPileCmd.AddGeneratedCardsToCombat(rapidbuild, PileType.Hand,owner);
-        return rapidbuild;
     }
 }

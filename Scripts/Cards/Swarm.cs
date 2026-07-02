@@ -2,22 +2,19 @@ using BaseLib.Utils;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
-using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
-using MegaCrit.Sts2.Core.Models.Powers;
 using MegaCrit.Sts2.Core.ValueProps;
-using Mokui1270.Scripts.Orbs;
 using Mokui1270.Scripts.Patchs;
 
 namespace Mokui1270.Scripts.Cards;
 [Pool(typeof(Mokui1270CardPool))]
 public class Swarm : AbstractMokui1270Card
 {
-    private const int energyCost = 1;
+    private const int energyCost = 0;
     private const CardType type = CardType.Attack;
-    private const CardRarity rarity = CardRarity.Uncommon;
+    private const CardRarity rarity = CardRarity.Token;
     private const TargetType targrtType = TargetType.AnyEnemy;
-    private const bool shouldShowInCardLibrary = true;
+    private const bool shouldShowInCardLibrary = false;
     protected override IEnumerable<DynamicVar> CanonicalVars => [
         new DamageVar(5, ValueProp.Move),
     ];  
@@ -36,15 +33,10 @@ public class Swarm : AbstractMokui1270Card
             .FromCard(this)
             .Targeting(cardPlay.Target)
             .Execute(choiceContext);
-        List<AttackUav> list =Owner.PlayerCombatState!.OrbQueue.Orbs.OfType<AttackUav>().ToList();
-		foreach (AttackUav item in list)
-		{
-			await OrbCmd.Passive(choiceContext, item, cardPlay.Target);
-		}
     }
 
     protected override void OnUpgrade()
     {
-        EnergyCost.UpgradeBy(-1);
+        DynamicVars.Damage.UpgradeValueBy(3);
     }
 }
