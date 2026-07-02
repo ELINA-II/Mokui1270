@@ -26,7 +26,6 @@ public class OverdriveLai : AbstractMokui1270Card
     ];
 
     protected override IEnumerable<IHoverTip> ExtraHoverTips => [
-        HoverTipFactory.FromPower<FluidRecoveryPower>(),
         HoverTipFactory.FromPower<BloodThirstyPower>()
     ];
 
@@ -42,7 +41,7 @@ public class OverdriveLai : AbstractMokui1270Card
             .FromCard(this)
 			.TargetingAllOpponents(CombatState!)
 			.Execute(choiceContext); 
-            if (Owner.HasPower<FluidRecoveryPower>() | Owner.HasPower<BloodThirstyPower>())
+            if (Owner.HasPower<BloodThirstyPower>())
             {
                 await CreatureCmd.Heal(Owner.Creature,num*2);
             }

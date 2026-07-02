@@ -19,7 +19,6 @@ public class Salvage : AbstractMokui1270Card
 
     protected override IEnumerable<DynamicVar> CanonicalVars => [
         new CardsVar(2),
-		new PowerVar<FocusPower>(1m),
         new EnergyVar(1),
     ];
     
@@ -34,9 +33,9 @@ public class Salvage : AbstractMokui1270Card
 		if (cardModel != null)
 		{
 			await CardCmd.Exhaust(choiceContext, cardModel);
-            if(cardModel.Type == CardType.Skill){
-            await PowerCmd.Apply<FocusPower>(choiceContext,Owner.Creature,DynamicVars["FocusPower"].BaseValue,Owner.Creature, this);
+            if(cardModel.Type == CardType.Status){
             await PlayerCmd.GainEnergy(1, Owner);
+            await CardPileCmd.Draw(choiceContext,1,Owner);
             }
 		}
         await CardPileCmd.Draw(choiceContext,DynamicVars.Cards.BaseValue,Owner);
