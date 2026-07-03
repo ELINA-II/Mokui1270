@@ -21,13 +21,9 @@ public class EnergyGradient : AbstractMokui1270Card
         HoverTipFactory.FromPower<EnergyGradientPower>()
     ];
 
-    public override IEnumerable<CardKeyword> CanonicalKeywords => [
-        MyKeyWords.BloodAttack
-    ];
     
     public EnergyGradient() : base(energyCost, type, rarity, targetType, true)
     {
-        isBlood = true;
     }
 
 

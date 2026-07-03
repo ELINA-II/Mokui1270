@@ -22,10 +22,6 @@ public class GarbageRecycle : AbstractMokui1270Card
     private const int BASE_HEAL = 6;      // 每耗能基础治疗量
     private const int X_CARD_HEAL = 12;   // X费卡牌治疗量
     private const int STATUS_CARD_COST = 1; // 状态牌按1耗能计算
-
-    protected override IEnumerable<IHoverTip> ExtraHoverTips => [
-        HoverTipFactory.FromKeyword(MyKeyWords.GarbageRecycle)
-    ];
     
     protected override IEnumerable<DynamicVar> CanonicalVars => [
         new HealVar(BASE_HEAL),

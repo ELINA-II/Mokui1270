@@ -43,19 +43,18 @@ public class OffensiveDefense : AbstractMokui1270Card
     }
     protected override async Task OnPlay(PlayerChoiceContext choiceContext,CardPlay cardPlay)
     {
-        Player player = Owner;
-        bool couldPlay = await CouldPlay((int)DynamicVars["Ram"].BaseValue, choiceContext, player);
-        if (!couldPlay)
+        // 1. 消耗 RAM
+        bool success = await SpendRAM(choiceContext);
+        if (!success)
         {
-            await CardPileCmd.Draw(choiceContext,DynamicVars.Cards.BaseValue,Owner);
-            await PlayerCmd.GainEnergy(DynamicVars.Energy.BaseValue,Owner);
-        }else{
+            // RAM 不足，卡牌无法打出（IsPlayable 已经阻止了这种情况）
+            return;
+        }
         StrengthNum = Owner.Creature.Block/8;
         await CreatureCmd.LoseBlock(Owner.Creature, Owner.Creature.Block);
         await PowerCmd.Apply<StrengthPower>(choiceContext,Owner.Creature,StrengthNum,Owner.Creature, this);
         await PowerCmd.Apply<VulnerablePower>(choiceContext,Owner.Creature,DynamicVars.Vulnerable.BaseValue,Owner.Creature, this);
         await CardPileCmd.Draw(choiceContext,DynamicVars.Cards.BaseValue,Owner);
-        }
     }
 
     protected override void OnUpgrade()

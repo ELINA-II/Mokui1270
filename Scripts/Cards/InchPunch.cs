@@ -14,18 +14,11 @@ namespace Mokui1270.Scripts.Cards;
 [Pool(typeof(Mokui1270CardPool))]
 public class InchPunch : AbstractMokui1270Card
 {
-    private const int BASE_DAMAGE = 20;
-    private const int X_CARD_DAMAGE = 40;
-    private const int X_CARD_HEAL = 8;
-    private const float DAMAGE_MULTIPLIER = 5f;
-    private const float HEAL_MULTIPLIER = 4f;
+    private const int BASE_DAMAGE = 8;
+    private const int DAMAGE_PER_CARD = 8;
     
     protected override IEnumerable<DynamicVar> CanonicalVars => [
         new DamageVar(BASE_DAMAGE, ValueProp.Move)
-    ];
-    
-    protected override IEnumerable<IHoverTip> ExtraHoverTips => [
-        HoverTipFactory.FromKeyword(MyKeyWords.InchPunch)
     ];
 
     public override IEnumerable<CardKeyword> CanonicalKeywords => [
@@ -41,54 +34,82 @@ public class InchPunch : AbstractMokui1270Card
     {
         ArgumentNullException.ThrowIfNull(cardPlay.Target, nameof(cardPlay.Target));
         
-        // 选择要消耗的卡牌
-        var prefs = new CardSelectorPrefs(CardSelectorPrefs.ExhaustSelectionPrompt, 1)
-        {            
-        };
+        // 获取弃牌堆
+        var discardPile = PileType.Discard.GetPile(Owner);
         
-        var selectedCards = await CardSelectCmd.FromHand(
-            prefs: prefs,
-            context: choiceContext,
-            player: Owner,
-            filter: null,
-            source: this
-        );
+        // 检查弃牌堆中是否有可消耗的牌（排除自身）
+        var availableCards = discardPile.Cards
+            .Where(c => c != this)
+            .ToList();
         
-        var selectedCard = selectedCards.FirstOrDefault();
+        if (availableCards.Count == 0)
+        {
+            // 弃牌堆为空，只造成基础伤害
+            await DamageCmd.Attack(BASE_DAMAGE)
+                .FromCard(this)
+                .Targeting(cardPlay.Target)
+                .Execute(choiceContext);
+            return;
+        }
         
-        if (selectedCard == null) return;
+        // 让玩家从弃牌堆选择要消耗的牌（最多4张）
+        var selectedCards = await SelectCardsFromDiscardPile(choiceContext, availableCards);
         
-        // 计算伤害和治疗量
-        var (damage, heal) = CalculateValues(selectedCard);
+        if (selectedCards == null || selectedCards.Count == 0)
+        {
+            // 没选任何牌，只造成基础伤害
+            await DamageCmd.Attack(BASE_DAMAGE)
+                .FromCard(this)
+                .Targeting(cardPlay.Target)
+                .Execute(choiceContext);
+            return;
+        }
         
-        // 先消耗卡牌
-        await CardCmd.Exhaust(choiceContext, selectedCard);
+        // 计算总伤害
+        int extraDamage = selectedCards.Count * DAMAGE_PER_CARD;
+        int totalDamage = BASE_DAMAGE + extraDamage;
+        
+        // 消耗选中的牌
+        foreach (var card in selectedCards)
+        {
+            await CardCmd.Exhaust(choiceContext, card);
+        }
         
         // 造成伤害
-        await DamageCmd.Attack(damage)
+        await DamageCmd.Attack(totalDamage)
             .FromCard(this)
             .Targeting(cardPlay.Target)
             .Execute(choiceContext);
-        
-        // 回复生命
-        if (heal > 0)
-        {
-            await CreatureCmd.Heal(Owner.Creature, heal);
-        }
     }
     
-    private (int damage, int heal) CalculateValues(CardModel card)
+    /// <summary>
+    /// 让玩家从弃牌堆选择要消耗的牌（最多4张）
+    /// 使用 FromCombatPile API
+    /// </summary>
+    private async Task<List<CardModel>> SelectCardsFromDiscardPile(PlayerChoiceContext choiceContext, List<CardModel> availableCards)
     {
-        if (card.EnergyCost.CostsX)
+        // 获取弃牌堆的引用
+        var discardPile = PileType.Discard.GetPile(Owner);
+        
+        var prefs = new CardSelectorPrefs(
+            CardSelectorPrefs.ExhaustSelectionPrompt,
+            1,
+            4
+        )
         {
-            return (X_CARD_DAMAGE, X_CARD_HEAL);
-        }
+            Cancelable = false
+        };
         
-        int cost = card.EnergyCost.Canonical;
-        int damage = BASE_DAMAGE + (int)(cost * DAMAGE_MULTIPLIER);
-        int heal = (int)(cost * HEAL_MULTIPLIER);
+        // 使用 FromCombatPile 从弃牌堆选择
+        var selected = await CardSelectCmd.FromCombatPile(
+            context: choiceContext,
+            pile: discardPile,
+            player: Owner,
+            prefs: prefs,
+            filter: card => card != this  // 排除自身
+        );
         
-        return (damage, heal);
+        return selected.ToList();
     }
     
     protected override void OnUpgrade()

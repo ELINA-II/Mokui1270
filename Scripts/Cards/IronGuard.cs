@@ -5,6 +5,7 @@ using MegaCrit.Sts2.Core.Entities.Players;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
+using MegaCrit.Sts2.Core.Models.Powers;
 using Mokui1270.Scripts.Patchs;
 using Mokui1270.Scripts.Powers;
 
@@ -37,7 +38,27 @@ public class IronGuard : AbstractMokui1270Card
     {
         teammateCount = Owner.Creature.CombatState!.Players
     .Count(p => p.Creature != null && p.Creature.IsAlive && p.Creature.Side == Owner.Creature.Side);
-        await PowerCmd.Apply<DashPower>(choiceContext,Owner.Creature,teammateCount, Owner.Creature, this);
+        await PowerCmd.Apply<IronGuardPower>(choiceContext,Owner.Creature,teammateCount, Owner.Creature, this);
+
+          var teammates = Owner.Creature.CombatState!.Players
+            .Where(p => p.Creature != null && 
+                        p.Creature.IsAlive && 
+                        p.Creature != Owner.Creature &&
+                        p.Creature.Side == Owner.Creature.Side)
+            .Select(p => p.Creature)
+            .ToList();
+        
+        foreach (var teammate in teammates)
+        {
+            await PowerCmd.Apply<IntangiblePower>(
+                choiceContext,
+                teammate,
+                1,  // 一层无实体
+                Owner.Creature,
+                this
+            );
+        }
+        
     }
     
     protected override void OnUpgrade()

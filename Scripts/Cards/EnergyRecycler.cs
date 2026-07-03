@@ -25,12 +25,14 @@ public class EnergyRecycler : AbstractMokui1270Card
     
     public override async Task AfterCardDrawn(PlayerChoiceContext choiceContext, CardModel card, bool fromHandDraw)
     {
+        if (card.Owner != Owner) return;
         if (!IsInHand() || card == this) return;
         await HealPlayer();
     }
     
     public override async Task AfterCardPlayed(PlayerChoiceContext context, CardPlay cardPlay)
     {
+        if (cardPlay.Card.Owner != Owner) return;
         if (!IsInHand() || cardPlay.Card == this) return;
         await HealPlayer();
     }

@@ -208,6 +208,8 @@ namespace Mokui1270.BloodCostSystem
             var player = __instance.Owner;
             if (player?.Creature == null || !player.Creature.IsAlive) return;
 
+            if (!LocalContext.IsMe(player)) return;
+
             var combatState = GetCombatState(__instance);
             if (combatState == null) return;
 
@@ -281,7 +283,7 @@ namespace Mokui1270.BloodCostSystem
                 ulong localPlayerId = LocalContext.NetId ?? player.NetId;
                 var choiceContext = new HookPlayerChoiceContext(
                     card,
-                    localPlayerId,
+                    player.NetId,
                     combatState,
                     GameActionType.Combat
                 );

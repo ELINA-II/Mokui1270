@@ -21,15 +21,10 @@ public class FluidRecovery : AbstractMokui1270Card
     protected override IEnumerable<IHoverTip> ExtraHoverTips => [
         HoverTipFactory.FromPower<FluidRecoveryPower>()
     ];
-
-    public override IEnumerable<CardKeyword> CanonicalKeywords => [
-        MyKeyWords.BloodAttack
-        ];
    
     
     public FluidRecovery() : base(2, CardType.Power, CardRarity.Rare, TargetType.Self, true)
     {
-        isBlood = true;
     }
     
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)

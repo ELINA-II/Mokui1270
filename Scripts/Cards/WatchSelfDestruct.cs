@@ -24,8 +24,6 @@ public class WatchSelfDestruct : AbstractMokui1270Card
 
     private bool isHardtokill = false;
     private bool isHardenedShell = false;
-
-    private bool couldPlay = false;
     protected override IEnumerable<DynamicVar> CanonicalVars => [
         new CardsVar(1),
         ];
@@ -48,15 +46,6 @@ public class WatchSelfDestruct : AbstractMokui1270Card
     protected override async Task OnPlay(PlayerChoiceContext choiceContext,CardPlay cardPlay)
     {
         Player player = Owner;
-        if (RAMClass.GetCurrentRAM(player) != 0)
-        {
-        couldPlay = true;   
-        }
-        if (!couldPlay)
-        {
-            await CardPileCmd.Draw(choiceContext,DynamicVars.Cards.BaseValue,Owner);
-            await PlayerCmd.GainEnergy(2,Owner);
-        }else{
         await RAMClass.ConsumeRAM(choiceContext,RAMClass.GetCurrentRAM(player),player);
         await PowerCmd.Apply<WatchSelfDestructPower>(choiceContext,Owner.Creature,3,Owner.Creature, this);
 		foreach (Creature hittableEnemy in CombatState!.HittableEnemies)
@@ -91,9 +80,7 @@ public class WatchSelfDestruct : AbstractMokui1270Card
                 await PowerCmd.Apply<HardenedShellPower>(choiceContext,hittableEnemy,1,Owner.Creature, this);
             }
         }
-		}
         await CardPileCmd.Draw(choiceContext,DynamicVars.Cards.BaseValue,Owner);
-        couldPlay = false;
         }
     }
 

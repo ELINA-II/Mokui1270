@@ -39,7 +39,7 @@ public class NaniteSwarmWall : AbstractMokui1270Card
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext,CardPlay cardPlay)
     {
-        await PowerCmd.Apply<RegenPower>(choiceContext,cardPlay.Target!,DynamicVars["IntangiblePower"].BaseValue,Owner.Creature, this);
+        await PowerCmd.Apply<IntangiblePower>(choiceContext,cardPlay.Target!,DynamicVars["IntangiblePower"].BaseValue,Owner.Creature, this);
         PlayerCmd.EndTurn(Owner, canBackOut: false);
     }
 

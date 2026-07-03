@@ -14,12 +14,9 @@ public class BloodThirsty : AbstractMokui1270Card
     {
         new PowerVar<BloodThirstyPower>(2m)  // 1层
     };
-
-    public override IEnumerable<CardKeyword> CanonicalKeywords => [MyKeyWords.BloodAttack];
     
     public BloodThirsty() : base(2, CardType.Power, CardRarity.Uncommon, TargetType.Self, true)
     {
-        isBlood = true;
     }
     
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)

@@ -31,6 +31,7 @@ public class IronGuardPower : CustomPowerModel
 		}
         var allPlayers = CombatState!.Players
             .Where(p => p.Creature.IsAlive)
+             .Where(p => p.Creature != Owner)  // ← 排除自己
             .Select(p => p.Creature)
             .ToList();      
         // 给所有玩家施加效果

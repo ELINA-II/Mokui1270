@@ -35,13 +35,13 @@ public class VacuumImplosion : AbstractMokui1270Card
     protected override async Task OnPlay(PlayerChoiceContext choiceContext,CardPlay cardPlay)
     {
         ArgumentNullException.ThrowIfNull(cardPlay.Target, "cardPlay.Target");
-        Player player = Owner;
-        bool couldPlay = await CouldPlay((int)DynamicVars["Ram"].BaseValue, choiceContext, player);
-        if (!couldPlay)
+        // 1. 消耗 RAM
+        bool success = await SpendRAM(choiceContext);
+        if (!success)
         {
-            await CardPileCmd.Draw(choiceContext,DynamicVars.Cards.BaseValue,Owner);
-            await PlayerCmd.GainEnergy(DynamicVars.Energy.BaseValue,Owner);
-        }else{
+            // RAM 不足，卡牌无法打出（IsPlayable 已经阻止了这种情况）
+            return;
+        }
         targetblock = cardPlay.Target.Block;
         await CreatureCmd.LoseBlock(cardPlay.Target, cardPlay.Target.Block);
         await DamageCmd.Attack(targetblock)
@@ -50,7 +50,6 @@ public class VacuumImplosion : AbstractMokui1270Card
             .Execute(choiceContext);
         await CreatureCmd.GainBlock(Owner.Creature,targetblock,ValueProp.Move | ValueProp.Unpowered,cardPlay);
         await CardPileCmd.Draw(choiceContext,DynamicVars.Cards.BaseValue,Owner);
-        }
     }
 
     protected override void OnUpgrade()

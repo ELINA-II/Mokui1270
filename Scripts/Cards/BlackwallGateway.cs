@@ -39,13 +39,13 @@ public class BlackwallGateway : AbstractMokui1270Card
     }
     protected override async Task OnPlay(PlayerChoiceContext choiceContext,CardPlay cardPlay)
     {
-        Player player = Owner;
-        bool couldPlay = await CouldPlay((int)DynamicVars["Ram"].BaseValue, choiceContext, player);
-        if (!couldPlay)
+        // 1. 消耗 RAM
+        bool success = await SpendRAM(choiceContext);
+        if (!success)
         {
-            await CardPileCmd.Draw(choiceContext,DynamicVars.Cards.BaseValue,Owner);
-            await PlayerCmd.GainEnergy(DynamicVars.Energy.BaseValue,Owner);
-        }else{
+            // RAM 不足，卡牌无法打出（IsPlayable 已经阻止了这种情况）
+            return;
+        }
         if((await DamageCmd.Attack(DynamicVars.Damage.BaseValue)
             .FromCard(this)
             .Targeting(cardPlay.Target!)
@@ -58,7 +58,7 @@ public class BlackwallGateway : AbstractMokui1270Card
             }
         await CreatureCmd.GainBlock(Owner.Creature,DynamicVars.Damage.PreviewValue,ValueProp.Move | ValueProp.Move,cardPlay);
         await CardPileCmd.Draw(choiceContext,DynamicVars.Cards.BaseValue,Owner);
-        }
+
     }
 
     
