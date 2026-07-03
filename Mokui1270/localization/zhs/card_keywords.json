@@ -4,9 +4,5 @@
     "MOKUI1270-HACKING.description": "打出时抽一张牌,如果打出的是攻击牌,额外获得造成伤害等量的格挡",
     "MOKUI1270-HACKING.title": "骇入",
     "MOKUI1270-NANOMACHINE.description": "打出此种牌时,回复所有玩家1生命值",
-    "MOKUI1270-NANOMACHINE.title": "纳米蜂群",
-    "MOKUI1270-INCHPUNCH.description": "如果消耗了X费的牌,则造成双倍基础值伤害,回复8血量",
-    "MOKUI1270-INCHPUNCH.title": "寸拳的额外消耗机制",
-    "MOKUI1270-GARBAGERECYCLE.description": "如果消耗了状态牌按耗能1算,如果消耗了X费牌则使当前能量翻倍,恢复12血量",
-    "MOKUI1270-GARBAGERECYCLE.title": "垃圾回收的额外机制"
+    "MOKUI1270-NANOMACHINE.title": "纳米蜂群"
 }

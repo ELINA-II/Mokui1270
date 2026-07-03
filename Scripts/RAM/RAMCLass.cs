@@ -13,7 +13,6 @@ public static class RAMClass
 {
     // ==================== 常量 ====================
     private const int DefaultMaxRAM = 10;
-    private const int HealthPerRAM = 6;
 
     // ==================== 本地状态 ====================
     private static bool _recoveryEnabled = true;
@@ -24,7 +23,6 @@ public static class RAMClass
     public static event Action<int>? OnRAMUsed;
     public static event Action? OnRAMRecover;
     public static event Action<Player, int, int>? OnChanged;
-    public static event Action<Player, int, int>? OnHealthSubstitution;
 
     // ==================== 辅助方法 ====================
 
@@ -201,6 +199,9 @@ public static class RAMClass
 
     public static bool IsRecoveryEnabled() => _recoveryEnabled;
 
+    /// <summary>
+    /// 检查玩家是否有足够的RAM
+    /// </summary>
     public static bool HasRAM(int amount, Player player)
     {
         if (amount <= 0) return true;
@@ -212,38 +213,6 @@ public static class RAMClass
     public static bool IsFullRAM(Player player)
     {
         return GetCurrentRAM(player) >= GetMaxRAM(player);
-    }
-
-    // ==================== 生命替代 ====================
-
-    public static int GetHealthCostForRAM(int ramAmount, Player player)
-    {
-        int currentRAM = GetCurrentRAM(player);
-        if (currentRAM >= ramAmount) return 0;
-        return (ramAmount - currentRAM) * HealthPerRAM;
-    }
-
-    public static bool CanPay(Player player, int ramAmount)
-    {
-        int currentRAM = GetCurrentRAM(player);
-        if (currentRAM >= ramAmount) return true;
-
-        int healthCost = (ramAmount - currentRAM) * HealthPerRAM;
-        return player.Creature.CurrentHp > healthCost;
-    }
-
-    public static (int ramCost, int healthCost) GetActualCost(Player player, int requiredRAM)
-    {
-        int currentRAM = GetCurrentRAM(player);
-        int ramCost = Math.Min(currentRAM, requiredRAM);
-        int healthCost = 0;
-
-        if (currentRAM < requiredRAM)
-        {
-            healthCost = (requiredRAM - currentRAM) * HealthPerRAM;
-        }
-
-        return (ramCost, healthCost);
     }
 
     // ==================== SET 方法 ====================
@@ -270,7 +239,7 @@ public static class RAMClass
 
     public static void AddRAMOverloadCount(Player? player)
     {
-        // 已通过 ConsumeRAM 记录
+        // 保留但不使用
     }
 
     public static int SetMaxRAM(Player? player, int maxRAM)
@@ -372,65 +341,24 @@ public static class RAMClass
         await SetRAM(choiceContext, newRAM, true, player);
     }
 
+    /// <summary>
+    /// 消耗RAM，如果RAM不足则返回false（卡牌无法打出）
+    /// </summary>
     public static async Task<bool> ConsumeRAM(PlayerChoiceContext choiceContext, int amount, Player player)
     {
         if (player?.Creature == null) return false;
 
         int currentRAM = GetCurrentRAM(player);
-        int maxRAM = GetMaxRAM(player);
 
-        if (currentRAM >= amount)
+        // 如果RAM不足，直接返回false
+        if (currentRAM < amount)
         {
-            await LoseRAMInternal(choiceContext, amount, player);
-            return true;
+            return false;
         }
-        else
-        {
-            int ramShortage = amount - currentRAM;
-            int healthCost = ramShortage * HealthPerRAM;
 
-            if (player.Creature.CurrentHp <= healthCost) return false;
-
-            if (currentRAM > 0)
-            {
-                await LoseRAMInternal(choiceContext, currentRAM, player);
-            }
-
-            try
-            {
-                await CreatureCmd.Damage(
-                    choiceContext,
-                    player.Creature,
-                    healthCost,
-                    ValueProp.Unblockable | ValueProp.Unpowered | ValueProp.Move,
-                    player.Creature
-                );
-            }
-            catch
-            {
-                player.Creature.SetCurrentHpInternal(player.Creature.CurrentHp - healthCost);
-            }
-
-            var combatState = GetCombatState(player);
-            var history = GetHistory();
-            if (combatState != null && history != null)
-            {
-                history.RecordRAMChanged(
-                    combatState,
-                    player.Creature,
-                    0,
-                    maxRAM,
-                    -currentRAM,
-                    "Overload",
-                    null
-                );
-            }
-
-            OnHealthSubstitution?.Invoke(player, ramShortage, healthCost);
-            OnChanged?.Invoke(player, 0, maxRAM);
-
-            return true;
-        }
+        // RAM充足，正常消耗
+        await LoseRAMInternal(choiceContext, amount, player);
+        return true;
     }
 
     public static void ModifyRAMDirect(Player player, int delta)

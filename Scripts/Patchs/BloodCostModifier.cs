@@ -47,6 +47,15 @@ namespace Mokui1270.BloodCostSystem
             return (bool)prop.GetValue(card)!;
         }
 
+        // ✅ 检测是否为 Hack 卡牌（使用 RAM 系统）
+        private static bool IsHackCard(CardModel card)
+        {
+            if (card == null) return false;
+            var prop = card.GetType().GetProperty("isHack");
+            if (prop == null) return false;
+            return (bool)prop.GetValue(card)!;
+        }
+
         private static bool HasUsedThisCombat(CardModel card, ICombatState combatState)
         {
             var history = GetHistory();
@@ -78,6 +87,9 @@ namespace Mokui1270.BloodCostSystem
             ref bool __result)
         {
             _logger.Debug($"=== HasEnoughResourcesForPrefix: {card?.Id?.Entry}, IsBlood: {IsBloodCard(card)}");
+            
+            // ✅ Hack 卡牌由 RAM 系统处理，BloodCost 跳过
+            if (IsHackCard(card)) return true;
             
             if (!IsBloodCard(card)) return true;
 
@@ -137,6 +149,9 @@ namespace Mokui1270.BloodCostSystem
         {
             _logger.Debug($"=== SpendResourcesPrefix: {__instance?.Id?.Entry}");
             
+            // ✅ Hack 卡牌由 RAM 系统处理，BloodCost 跳过
+            if (IsHackCard(__instance)) return;
+            
             if (!IsBloodCard(__instance)) return;
 
             var player = __instance.Owner;
@@ -149,7 +164,6 @@ namespace Mokui1270.BloodCostSystem
 
             if (!_borrowedEnergy.TryGetValue(__instance, out var borrowedData))
             {
-                // 如果 History 有借用记录，说明是同步过来的，跳过
                 if (HasBorrowedThisTurn(__instance, combatState)) return;
                 return;
             }
@@ -185,6 +199,9 @@ namespace Mokui1270.BloodCostSystem
             _logger.Debug($"=== SpendResourcesFinalizer: {__instance?.Id?.Entry}, Exception: {__exception?.Message ?? "None"}");
             
             if (__exception != null) return;
+
+            // ✅ Hack 卡牌由 RAM 系统处理，BloodCost 跳过
+            if (IsHackCard(__instance)) return;
 
             if (!IsBloodCard(__instance)) return;
 
