@@ -134,6 +134,8 @@
     "MOKUI1270-WATCH_SELF_DESTRUCT.description":"消耗所有RAM,所有敌人失去当前生命值一半的血量,3回合内RAM不可回复",
     "MOKUI1270-SWAP.title":"S.W.A.P",
     "MOKUI1270-SWAP.description":"RAM上限增加2",
+    "MOKUI1270-ACT_OF_RESCUE.title": "紧急避险",
+    "MOKUI1270-ACT_OF_RESCUE.description": "[gold]内存占用[/gold]{Ram:diff()},获得{Block:diff()}点格挡,打出后此牌回手",
     
     
     

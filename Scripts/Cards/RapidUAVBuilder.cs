@@ -61,7 +61,8 @@ public class RapidUAVBuilder : AbstractMokui1270Card
     {
         var prefs = new CardSelectorPrefs(
             CardSelectorPrefs.TransformSelectionPrompt,
-            -1  // ✅ -1 表示不限数量
+            1,
+            8
         )
         {
             Cancelable = false  // 不允许取消

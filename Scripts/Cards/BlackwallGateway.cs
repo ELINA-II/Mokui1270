@@ -82,7 +82,7 @@ public class BlackwallGateway : AbstractMokui1270Card
         {
             blackgateway.Add(combatState.CreateCard<BlackwallGateway>(owner));
         }
-        await CardPileCmd.AddGeneratedCardsToCombat(blackgateway, PileType.Hand, owner, default);
+        await CardPileCmd.AddGeneratedCardsToCombat(blackgateway, PileType.Hand, owner, CardPilePosition.Bottom);
         return blackgateway;
     }
 }

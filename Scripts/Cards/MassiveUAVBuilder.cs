@@ -18,6 +18,11 @@ public class MassiveUAVBuilder : AbstractMokui1270Card
     private const CardRarity RARITY = CardRarity.Rare;
     private const TargetType TARGET_TYPE = TargetType.Self;
 
+    // ✅ 添加 CalculatedHits 到 DynamicVars
+    protected override IEnumerable<DynamicVar> CanonicalVars => [
+        new DynamicVar("CalculatedHits", 0m),  // 默认值，实际会在 OnPlay 中计算
+    ];
+
     public MassiveUAVBuilder() : base(ENERGY_COST, TYPE, RARITY, TARGET_TYPE, true)
     {
         isNanomachine = true;
@@ -28,25 +33,31 @@ public class MassiveUAVBuilder : AbstractMokui1270Card
     ];
 
     protected override IEnumerable<IHoverTip> ExtraHoverTips => [
-
     ];
-     
-       protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
-	{
-		List<CardModel> list = GetStatuses(Owner).ToList();
-		int statusCount = (int)((CalculatedVar)DynamicVars["CalculatedHits"]).Calculate(cardPlay.Target);
-		foreach (CardModel item in list)
-		{
-			await CardCmd.Exhaust(choiceContext, item);
-		}
-        await CardPileCmd.Draw(choiceContext,statusCount,Owner);
-        await PlayerCmd.GainEnergy(statusCount, Owner);
-	}
 
-	private static IEnumerable<CardModel> GetStatuses(Player owner)
-	{
-		return owner.PlayerCombatState!.AllCards.Where((CardModel c) => (c.Type == CardType.Status || c.Type == CardType.Curse || c.Type == CardType.Quest) && c.Pile!.Type == PileType.Draw);
-	}
+    protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
+    {
+        // 获取抽牌堆中的状态牌/诅咒牌/任务牌
+        var statusCards = GetStatuses(Owner).ToList();
+        int statusCount = statusCards.Count;  // ✅ 直接使用 Count，不需要 DynamicVar
+
+        // 消耗所有找到的牌
+        foreach (CardModel item in statusCards)
+        {
+            await CardCmd.Exhaust(choiceContext, item);
+        }
+
+        // 根据消耗的数量抽牌和获得能量
+        await CardPileCmd.Draw(choiceContext, statusCount, Owner);
+        await PlayerCmd.GainEnergy(statusCount, Owner);
+    }
+
+    private static IEnumerable<CardModel> GetStatuses(Player owner)
+    {
+        return owner.PlayerCombatState!.AllCards
+            .Where(c => (c.Type == CardType.Status || c.Type == CardType.Curse || c.Type == CardType.Quest) 
+                        && c.Pile?.Type == PileType.Draw);
+    }
 
     protected override void OnUpgrade()
     {

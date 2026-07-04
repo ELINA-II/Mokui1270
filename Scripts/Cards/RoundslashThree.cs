@@ -55,7 +55,7 @@ public class RoundslashThree : AbstractMokui1270Card
         (CombatState)CombatState!               // 战斗状态
         );
         CardCmd.PreviewCardPileAdd(
-        await CardPileCmd.AddGeneratedCardsToCombat(enumerable, PileType.Draw, Owner, default)
+        await CardPileCmd.AddGeneratedCardsToCombat(enumerable, PileType.Draw, Owner, CardPilePosition.Random)
         );
         await SpiritHelmBreaker.CreateInHand(Owner,(CombatState)CombatState!);
 	    await Cmd.Wait(0.25f);
@@ -79,7 +79,7 @@ public class RoundslashThree : AbstractMokui1270Card
         {
             roundslashiii.Add(combatState.CreateCard<RoundslashThree>(owner));
         }
-        await CardPileCmd.AddGeneratedCardsToCombat(roundslashiii, PileType.Hand, owner, default);
+        await CardPileCmd.AddGeneratedCardsToCombat(roundslashiii, PileType.Hand, owner, CardPilePosition.Bottom);
         return roundslashiii;
     }
 }

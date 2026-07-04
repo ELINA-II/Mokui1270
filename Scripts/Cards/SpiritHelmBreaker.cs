@@ -67,7 +67,7 @@ public class SpiritHelmBreaker : AbstractMokui1270Card
         {
             SpiritHelmBreaker.Add(combatState.CreateCard<SpiritHelmBreaker>(owner));
         }
-        await CardPileCmd.AddGeneratedCardsToCombat(SpiritHelmBreaker, PileType.Hand, owner, default);
+        await CardPileCmd.AddGeneratedCardsToCombat(SpiritHelmBreaker, PileType.Hand, owner, CardPilePosition.Bottom);
         return SpiritHelmBreaker;
     }
 
