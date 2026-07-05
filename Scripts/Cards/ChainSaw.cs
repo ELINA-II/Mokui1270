@@ -70,11 +70,13 @@ public class ChainSaw : AbstractMokui1270Card
         await CreatureCmd.Heal(creature, healAmount);
         
         // 5. 对全体敌人造成3次伤害
-        await DamageCmd.Attack(DynamicVars.Damage.BaseValue)
-            .WithHitCount(3)
+        for (int i = 0; i < 3; i++)
+        {
+            await DamageCmd.Attack(DynamicVars.Damage.BaseValue)
             .FromCard(this)
             .TargetingAllOpponents(CombatState!)
             .Execute(choiceContext);
+        }
     }
 
     /// <summary>

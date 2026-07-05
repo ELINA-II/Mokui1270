@@ -52,7 +52,7 @@
     "MOKUI1270-TOXIN_NEUTRALIZATION.title":"毒素中和",
     "MOKUI1270-TOXIN_NEUTRALIZATION.description":"失去{HpLoss:diff()}点生命,移除所有负面状态",
     "MOKUI1270-DASH.title":"机动冲刺·改",
-    "MOKUI1270-DASH.description":"本回合每次受到的伤害有50%概率变为0,50%概率伤害减半",
+    "MOKUI1270-DASH.description":"本回合每次受到的伤害降为75%",
     "MOKUI1270-ENERGY_GRADIENT.title":"能量偏导·改",
     "MOKUI1270-ENERGY_GRADIENT.description":"你的超量治疗会转变为等量格挡，格挡不再在回合开始时清空",
     "MOKUI1270-BLOOD_THIRSTY.title":"嗜血",

@@ -1,9 +1,7 @@
 using BaseLib.Abstracts;
 using MegaCrit.Sts2.Core.Entities.Cards;
-using MegaCrit.Sts2.Core.Entities.Players;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.Models;
-using Mokui1270.NanomachineCostSystem;
 using Mokui1270.Scripts.RAM;
 
 namespace Mokui1270.Scripts.Cards;
@@ -32,7 +30,6 @@ public abstract class AbstractMokui1270Card : CustomCardModel
         {
             if (_isNanomachine == value) return;
             _isNanomachine = value;
-            this.SetNanomachine(value);
         }
     }
     private bool _isNanomachine = false;

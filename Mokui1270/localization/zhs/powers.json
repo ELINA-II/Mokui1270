@@ -1,6 +1,6 @@
 {
-    "MOKUI1270-DASH_POWER.description": "本回合每次受到的伤害有[gold]50%[/gold]概率变为0,[gold]50%[/gold]概率伤害减半",
-    "MOKUI1270-DASH_POWER.smartDescription":"本回合每次受到的伤害有[gold]50%[/gold]概率变为0,[gold]50%[/gold]概率伤害减半",
+    "MOKUI1270-DASH_POWER.description": "本回合每次受到的伤害降为[gold]75%[/gold]",
+    "MOKUI1270-DASH_POWER.smartDescription":"本回合每次受到的伤害降为[gold]75%[/gold]",
     "MOKUI1270-DASH_POWER.title": "机动冲刺·改",
     "MOKUI1270-ENERGY_GRADIENT_POWER.description": "你的超量治疗会转变为等量格挡，格挡不再在回合开始时清空",
     "MOKUI1270-ENERGY_GRADIENT_POWER.smartDescription":"你的超量治疗会转变为等量格挡，格挡不再在回合开始时清空",
